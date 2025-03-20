@@ -1,18 +1,18 @@
 {
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.biome": "explicit"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "cSpell.words": [
-    "cmdk",
-    "embla",
-    "lefthook",
-    "shadcn",
-    "sonner",
-    "turbopack",
-    "vaul"
-  ]
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "explicit"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"cSpell.words": [
+		"cmdk",
+		"embla",
+		"lefthook",
+		"shadcn",
+		"sonner",
+		"turbopack",
+		"vaul"
+	]
 }
