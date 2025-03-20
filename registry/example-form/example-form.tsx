@@ -1,6 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { z } from "zod";
+import { Button } from "./../../apps/docs/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,12 +10,10 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import * as React from "react";
-import { z } from "zod";
+} from "./../../apps/docs/components/ui/card";
+import { Input } from "./../../apps/docs/components/ui/input";
+import { Label } from "./../../apps/docs/components/ui/label";
+import { Textarea } from "./../../apps/docs/components/ui/textarea";
 
 const exampleFormSchema = z.object({
 	name: z.string().min(1),
