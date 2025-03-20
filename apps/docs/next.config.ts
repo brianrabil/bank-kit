@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
 	outputFileTracingIncludes: {
 		registry: ["./../../registry/**/*"],
 	},
-	/* config options here */
+	transpilePackages: ["@bank-kit/ui", "@bank-kit/registry"],
 };
 
 export default nextConfig;

@@ -1,7 +1,7 @@
-import PokemonPage from "@/../../registry/complex-component/page";
-import { ExampleForm } from "@/../../registry/example-form/example-form";
-import { HelloWorld } from "@/../../registry/hello-world/hello-world";
-import { OpenInV0Button } from "@/components/open-in-v0-button";
+import PokemonPage from "@bank-kit/registry/complex-component/page";
+import { ExampleForm } from "@bank-kit/registry/example-form/example-form";
+import { HelloWorld } from "@bank-kit/registry/hello-world/hello-world";
+import { OpenInV0Button } from "@bank-kit/ui/components/open-in-v0-button";
 import * as React from "react";
 
 // This page displays items from the custom registry.

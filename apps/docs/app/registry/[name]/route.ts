@@ -11,7 +11,7 @@ export async function GET(
 	try {
 		const { name } = await context.params;
 		// Cache the registry import
-		const registryData = await import("@/../../registry.json");
+		const registryData = await import("@bank-kit/registry/registry.json");
 		const registry = registryData.default;
 
 		// Find the component from the registry.

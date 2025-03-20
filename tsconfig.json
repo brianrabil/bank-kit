@@ -1,0 +1,3 @@
+{
+	"extends": "@bank-kit/typescript-config/base.json"
+}
