@@ -1,0 +1,133 @@
+---
+title: "Figma"
+description: "Using the Bank Kit design library in Figma"
+---
+
+# Figma
+
+Bank Kit includes a **Figma design library** that mirrors our React components and provides designers and developers with a single source of truth for all UI elements—ensuring visual consistency and smoother handoffs.
+
+---
+
+## 1. Accessing the Figma Library
+
+1. **Join Our Figma Team**
+   If you are part of the Bank Kit team, you will receive an invite to our shared Figma workspace. Simply accept the invite and look for the **Bank Kit Design Library** project.
+   > **External Collaborators**: Contact your project manager or the design lead to request a guest invite.
+
+2. **Open the “Bank Kit Design Library”**
+   In Figma, go to **Team Projects** → **Bank Kit** → **Design Library**. You’ll see separate pages for **Components**, **Styles**, **Typography**, and more.
+
+3. **Enable Library**
+   In your own Figma files, you can go to **Assets** → **Libraries** and toggle on **Bank Kit** to use its components. Figma will automatically display any updates made by the design team.
+
+---
+
+## 2. Library Structure
+
+Here’s how we organize our Figma library:
+
+- **Foundations**
+  - **Color**: Palette definitions (primary, secondary, neutrals, states).
+  - **Typography**: Display & Text styles mirroring Bank Kit’s code-based type system.
+  - **Spacing** & **Layout**: Grid systems, spacing tokens, breakpoints for responsive design.
+
+- **Components**
+  - **UI Elements**: Buttons, Inputs, Selects, Dialogs, Tooltips, etc.
+  - **Banking-Specific**: Transaction lists, account overviews, charts, payment forms.
+  - **Container & Layout**: Cards, Modals, Sidebars, Navbars.
+
+- **Patterns & Templates**
+  - Pre-composed user flows (e.g., onboarding, transfer wizard).
+  - Dashboard layouts for account summaries and analytics.
+
+- **Annotations & Documentation**
+  - Each component includes notes on usage, states (hover, active, disabled), and responsive behavior.
+
+---
+
+## 3. Working with Components
+
+1. **Drag & Drop**
+   - Select a component from the Bank Kit assets panel and place it on your design canvas.
+   - You can override text, swap icons, or change style variants (e.g., `Primary Button` vs `Secondary Button`).
+
+2. **Variants**
+   - Many components come with built-in Figma variants, letting you switch between sizes (`sm`, `md`, `lg`) or states (default, hover, disabled).
+   - This matches how components in `@bank-kit/ui` handle props like `size="sm"` or `disabled={true}` in code.
+
+3. **Customize Safely**
+   - You can override text, colors, or icons in your local design file, but do **not** detach the component unless necessary. This ensures changes remain linked to the master library for future updates.
+
+---
+
+## 4. Syncing Figma with Code
+
+1. **One-to-One Mapping**
+   - Each Figma component is named consistently with its React counterpart (e.g., `Button`, `Card`, `Modal`).
+   - In code, you might import them from `@bank-kit/ui/components/button`, etc.
+
+2. **Design Tokens**
+   - The color and typography tokens in Figma match the Tailwind CSS classes defined in `tailwind.config.js`.
+   - This reduces friction when updating colors, font sizes, or spacing across both design and code.
+
+3. **Version Updates**
+   - When we release new components or variations in the React library, we also update the Figma library.
+   - Conversely, if you create a new pattern in Figma, coordinate with the dev team to add a matching component or registry item in code.
+
+---
+
+## 5. Contributing to the Figma Library
+
+<details>
+  <summary><strong>Propose Design Changes</strong></summary>
+  - If you want to add or adjust a shared component, open a pull request on the Figma file by duplicating the master component to a “Working” page.
+  - Tag the design lead and share your rationale (new brand requirement, UX improvement, etc.).
+</details>
+
+<details>
+  <summary><strong>Design Reviews</strong></summary>
+  - We hold weekly or bi-weekly design reviews. Attend these sessions to discuss proposed changes, gather feedback, and finalize updates for the main library.
+</details>
+
+---
+
+## 6. Best Practices
+
+- **Maintain Consistency**: Follow the naming conventions for layers and components (e.g., `Button / Primary / Default`).
+- **Leverage Variants**: Use Figma’s variant system instead of creating separate master components for each state.
+- **Document States**: Include hover, focus, error, or loading states in the component’s frames.
+- **Use Auto Layout**: Helps replicate the responsive nature of Tailwind layouts.
+- **Stay in Sync**: Regularly merge library changes. If you see the “Update Components” button in Figma, do it to pull in the latest.
+
+---
+
+## 7. Frequently Asked Questions
+
+<details>
+  <summary><strong>How do I request access to the Figma library?</strong></summary>
+  Contact the Bank Kit design team or your project manager for an invite link. If you’re external to the organization, we can provide a restricted guest access.
+</details>
+
+<details>
+  <summary><strong>Can I export assets from Figma to use directly in code?</strong></summary>
+  Certain icons or images can be exported, but typically we recommend referencing our React-based icons from <code>@bank-kit/ui</code> for consistency.
+</details>
+
+<details>
+  <summary><strong>What's the best way to keep components updated?</strong></summary>
+  Whenever you open Figma, check if there are library updates available (an icon usually appears in the top-right corner). Apply them to keep your file current.
+</details>
+
+---
+
+## Summary
+
+Our **Figma design library** mirrors the Bank Kit React components so that **designers and developers** share the same vision and style resources. By staying in sync through consistent naming, design tokens, and regular updates, you can create modern, cohesive, and secure banking interfaces without friction.
+
+**Next Steps:**
+- Start a new design in Figma using Bank Kit’s styles and components.
+- For detailed UI references, see the [Components](/docs/components) section.
+- If you build new patterns, coordinate with the dev team to add them to the official library.
+
+*Happy Designing!*

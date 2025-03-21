@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
+import nextra from "nextra";
 
-const nextConfig: NextConfig = {
-	outputFileTracingIncludes: {
-		registry: ["./../../registry/**/*"],
-	},
+const withNextra = nextra({
+	// ... Other Nextra config options
+	// contentDirBasePath: '/docs'
+	contentDirBasePath: "/app/docs",
+});
+
+export default withNextra({
 	transpilePackages: ["@bank-kit/ui", "@bank-kit/registry"],
-};
-
-export default nextConfig;
+});

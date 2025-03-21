@@ -1,6 +1,6 @@
+import { PokemonCard } from "@bank-kit/registry/complex-component/components/pokemon-card";
+import { getPokemonList } from "@bank-kit/registry/complex-component/lib/pokemon";
 import { cache } from "react";
-import { PokemonCard } from "./components/pokemon-card";
-import { getPokemonList } from "./lib/pokemon";
 
 const getCachedPokemonList = cache(getPokemonList);
 
