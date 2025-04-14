@@ -2,6 +2,7 @@ import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { Banner, Head } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import "nextra-theme-docs/style.css";
+import "@bank-kit/ui/globals.css";
 
 export const metadata = {
 	// Define your metadata here
@@ -40,12 +41,11 @@ export default async function RootLayout({
 			</Head>
 			<body>
 				<Layout
-					banner={banner}
+					// banner={banner}
 					navbar={navbar}
 					pageMap={await getPageMap()}
 					docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
 					footer={footer}
-					// ... Your additional layout options
 				>
 					{children}
 				</Layout>
