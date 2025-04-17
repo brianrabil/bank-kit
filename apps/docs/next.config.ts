@@ -1,10 +1,8 @@
-import type { NextConfig } from "next";
 import nextra from "nextra";
 
 const withNextra = nextra({
-	// ... Other Nextra config options
-	// contentDirBasePath: '/docs'
 	contentDirBasePath: "/app/docs",
+	defaultShowCopyCode: true,
 });
 
 export default withNextra({

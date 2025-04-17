@@ -14,13 +14,10 @@ export const metadata = {
 const banner = (
 	<Banner storageKey="some-key">Bank Kit 4.0 is released 🎉</Banner>
 );
-const navbar = (
-	<Navbar
-		logo={<b>Bank Kit</b>}
-		// ... Your additional navbar options
-	/>
-);
-const footer = <Footer>MIT {new Date().getFullYear()} © Bank Kit.</Footer>;
+
+const navbar = <Navbar logo={<b>Bank Kit</b>} />;
+
+const footer = <Footer>MIT {new Date().getFullYear()} © Bank Kit UI.</Footer>;
 
 export default async function RootLayout({
 	children,

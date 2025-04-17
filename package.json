@@ -13,7 +13,6 @@
 		"@bank-kit/typescript-config": "workspace:*",
 		"@biomejs/biome": "1.9.4",
 		"@types/node": "^20",
-		"lefthook": "^1.11.3",
 		"turbo": "^2.5.0",
 		"typescript": "^5"
 	},

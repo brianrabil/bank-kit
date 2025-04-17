@@ -1,0 +1,137 @@
+---
+title: Text
+description: Type scale, usage guidelines, and API for **Bank‑Kit**’s `Text` component.
+---
+
+import { TSDoc, generateDocumentation } from "nextra/tsdoc";
+import { ComponentAPITable } from "@/components/component-api-table";
+import { DisplayXL, Muted, Text } from "@bank-kit/ui/components/text"
+import { Tabs, Steps, Playground, Table } from "nextra/components"
+import { dedent } from "ts-dedent"
+
+# Text
+
+Bank‑Kit exposes a single, polymorphic <code>&lt;Text /&gt;</code> primitive that covers
+headings, paragraphs, muted helper text, and more. It’s powered by
+<em>class‑variance‑authority</em> for ergonomic styling—no extra CSS required.
+
+> The type scale aligns with our design tokens, so you can tweak sizing directly in
+<code>tailwind.config.ts</code> if your brand evolves.
+
+
+---
+
+## Getting Started
+ 
+Here is some description.
+ 
+<Steps>
+### Step 1
+ 
+Contents for step 1.
+ 
+### Step 2
+ 
+Contents for step 2.
+</Steps>
+
+
+## Quick Start
+
+<Tabs items={["Preview", "Code"]} storageKey="bankkit-typography-demo">
+  <Tabs.Tab>
+    <div className="space-y-4">
+      <DisplayXL weight="bold">Your Money, Re‑imagined</DisplayXL>
+      <Text>Manage accounts, transfer funds, and monitor spending—securely and in real time.</Text>
+      <Muted size="sm">Transfers may take up to 2 business days to settle.</Muted>
+    </div>
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```tsx
+import { Text } from "@bank-kit/ui/components/text"
+
+<Text variant="display" size="xl" weight="bold" as="h1">
+  Your Money, Re‑imagined
+</Text>
+
+<Text>
+  Manage accounts, transfer funds, and monitor spending—securely and in real time.
+</Text>
+
+<Text color="muted" size="sm">
+  Transfers may take up to 2 business days to settle.
+</Text>
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Props
+
+> **Tip** — All convenience exports (`Display2XL`, `TextSM`, etc.) are just thin wrappers around `<Text>` with preset props. Copy the pattern to create your own aliases.
+
+<TSDoc
+  definition={generateDocumentation({
+    code: dedent`
+      import type { TSDoc } from 'nextra/tsdoc'
+      type MyProps = React.ComponentProps<typeof TSDoc>
+      export default MyProps`,
+  })}
+/>
+
+---
+
+## Type Scale
+
+| Variant | Token | Size / Line‑height | Tracking |
+|---------|-------|--------------------|----------|
+| display | 2xl   | 72 / 90 px         | −2 %     |
+|         | xl    | 60 / 72 px         | −2 %     |
+|         | lg    | 48 / 60 px         | −2 %     |
+|         | md    | 36 / 44 px         | −2 %     |
+|         | sm    | 30 / 38 px         | —        |
+|         | xs    | 24 / 32 px         | —        |
+| body    | xl    | 20 / 30 px         | —        |
+|         | lg    | 18 / 28 px         | —        |
+|         | md    | 16 / 24 px         | —        |
+|         | sm    | 14 / 20 px         | —        |
+|         | xs    | 12 / 18 px         | —        |
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Country</Table.Th>
+      <Table.Th>Flag</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>France</Table.Td>
+      <Table.Td>🇫🇷</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Ukraine</Table.Td>
+      <Table.Td>🇺🇦</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+
+---
+
+## Best Practices
+
+1. **Tabular numbers** — add <code>font-variant-numeric: tabular-nums</code> for monetary values.
+2. **Respect reduced motion** — disable ticker animations if `prefers‑reduced‑motion` is set.
+3. **Avoid italics for financial data** — they hurt legibility in dense tables.
+4. **Maintain contrast** — ensure at least WCAG AA for text on colored surfaces.
+
+---
+
+## Next Steps
+
+- Explore **Layout Primitives** → `/docs/layout` for grid & stack utilities.
+- Read **Design Tokens** → `/docs/tokens` to customize font families.

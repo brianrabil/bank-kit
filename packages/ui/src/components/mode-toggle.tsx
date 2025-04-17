@@ -1,12 +1,11 @@
 "use client";
 
+import { Button } from "@bank-kit/ui/components/ui/button";
+import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import * as React from "react";
 
-import { Button } from "@bank-kit/ui/components/ui/button";
-import { Moon, Sun } from "lucide-react";
-
-export function ModeToggle() {
+export function ThemeToggle() {
 	const { setTheme, resolvedTheme } = useTheme();
 	const [, startTransition] = React.useTransition();
 
@@ -21,8 +20,8 @@ export function ModeToggle() {
 			size="icon"
 			variant="ghost"
 		>
-			<Moon className="dark:hidden" />
-			<Sun className="hidden dark:block" />
+			<MoonIcon className="dark:hidden" />
+			<SunIcon className="hidden dark:block" />
 			<span className="sr-only">Toggle theme</span>
 		</Button>
 	);
