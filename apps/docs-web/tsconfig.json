@@ -2,7 +2,11 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"target": "ESNext",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
@@ -16,8 +20,18 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"paths": {
-			"@/.source": ["./.source/index.ts"],
-			"@/*": ["./*"]
+			"@/.source": [
+				"./.source/index.ts"
+			],
+			"@/*": [
+				"./*"
+			],
+			"@bank-kit/ui/*": [
+				"../../packages/ui/src/*"
+			],
+			"@bank-kit/registry/*": [
+				"../../packages/registry/src/*"
+			]
 		},
 		"plugins": [
 			{
@@ -25,6 +39,13 @@
 			}
 		]
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-	"exclude": ["node_modules"]
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

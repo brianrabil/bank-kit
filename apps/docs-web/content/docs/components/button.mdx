@@ -1,0 +1,376 @@
+---
+title: Button
+description: Interactive button component for financial applications with various states and variants.
+sidebar:
+  label: Button
+  order: 10
+---
+
+import { Button } from '@bank-kit/ui/components/button';
+import { ComponentPreview, PropsTable } from '@bank-kit/ui/components/docs-components';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@bank-kit/ui/components/ui/tabs';
+import { Callout } from '@bank-kit/ui/components/callout';
+import { Separator } from '@bank-kit/ui/components/ui/separator';
+import { CreditCard, ArrowRight, Download, AlertTriangle } from 'lucide-react';
+
+
+export const buttonProps = [
+  {
+    name: 'variant',
+    type: `"primary" | "secondary" | "outline" | "ghost" | "destructive" | "link"`,
+    defaultValue: '"primary"',
+    description: 'Visual style of the button.',
+  },
+  {
+    name: 'size',
+    type: `"default" | "sm" | "lg" | "icon"`,
+    defaultValue: '"default"',
+    description: 'Size of the button.',
+  },
+  {
+    name: 'isLoading',
+    type: 'boolean',
+    defaultValue: 'false',
+    description: 'Shows a spinner and disables the button.',
+  },
+  {
+    name: 'loadingText',
+    type: 'string',
+    defaultValue: '"Please wait"',
+    description: 'Text displayed when loading.',
+  },
+  {
+    name: 'asChild',
+    type: 'boolean',
+    defaultValue: 'false',
+    description: 'Renders children into a slot.',
+  },
+  {
+    name: 'leftIcon',
+    type: 'ReactNode',
+    description: 'Icon before the text.',
+  },
+  {
+    name: 'rightIcon',
+    type: 'ReactNode',
+    description: 'Icon after the text.',
+  },
+  {
+    name: 'disabled',
+    type: 'boolean',
+    defaultValue: 'false',
+    description: 'Disables the button.',
+  },
+  {
+    name: 'className',
+    type: 'string',
+    description: 'Extra Tailwind classes.',
+  },
+  {
+    name: 'children',
+    type: 'ReactNode',
+    description: 'Button label / content.',
+  },
+];
+
+export const copyButtonProps = [
+  {
+    name: 'value',
+    type: 'string',
+    required: true,
+    description: 'String copied to clipboard.',
+  },
+  {
+    name: 'successDuration',
+    type: 'number',
+    defaultValue: '2000',
+    description: 'Success state duration (ms).',
+  },
+  {
+    name: 'successText',
+    type: 'string',
+    defaultValue: '"Copied!"',
+    description: 'Displayed after successful copy.',
+  },
+  {
+    name: 'iconPosition',
+    type: `"left" | "right"`,
+    defaultValue: '"left"',
+    description: 'Icon placement.',
+  },
+];
+
+export const holdDeleteButtonProps = [
+  {
+    name: 'onDelete',
+    type: '() => void',
+    required: true,
+    description: 'Callback on confirmed delete.',
+  },
+  {
+    name: 'holdDuration',
+    type: 'number',
+    defaultValue: '1500',
+    description: 'Hold time (ms) before firing delete.',
+  },
+  {
+    name: 'holdText',
+    type: 'string',
+    defaultValue: '"Hold to delete..."',
+    description: 'Progress text while holding.',
+  },
+  {
+    name: 'confirmText',
+    type: 'string',
+    defaultValue: '"Deleted!"',
+    description: 'Text shown on completion.',
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/* Page content                                                               */
+/* -------------------------------------------------------------------------- */
+
+# Button
+
+A customizable button component designed specifically for financial and banking applications.
+
+<Separator className="my-8" />
+
+## Overview
+
+The **Button** is a fundamental UI element in bank‑kit.  
+It supports multiple **variants**, **sizes**, icon placement, and built‑in loading states.
+
+<div className="mt-6 flex flex-wrap gap-4">
+  <Button>Transfer Funds</Button>
+  <Button variant="secondary">View Statement</Button>
+  <Button variant="outline">Settings</Button>
+  <Button variant="destructive">Close Account</Button>
+</div>
+
+## Installation
+
+```bash
+npm i @bank-kit/ui
+```
+
+```tsx
+import { Button } from '@bank-kit/ui';
+```
+
+## Usage
+
+<Tabs defaultValue="variants" className="mt-6">
+  <TabsList className="mb-4">
+    <TabsTrigger value="variants">Variants</TabsTrigger>
+    <TabsTrigger value="sizes">Sizes</TabsTrigger>
+    <TabsTrigger value="icons">Icons</TabsTrigger>
+    <TabsTrigger value="loading">Loading</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="variants">
+    <ComponentPreview
+      title="Variants"
+      description="Visual styles for different contexts."
+      code={`<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="link">Link</Button>`}
+    >
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="outline">Outline</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="destructive">Destructive</Button>
+        <Button variant="link">Link</Button>
+      </div>
+    </ComponentPreview>
+  </TabsContent>
+
+  <TabsContent value="sizes">
+    <ComponentPreview
+      title="Sizes"
+      description="Adapt to different layouts."
+      code={`<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+<Button size="icon"><CreditCard /></Button>`}
+    >
+      <div className="flex flex-wrap gap-4">
+        <Button size="sm">Small</Button>
+        <Button size="default">Default</Button>
+        <Button size="lg">Large</Button>
+        <Button size="icon">
+          <CreditCard />
+        </Button>
+      </div>
+    </ComponentPreview>
+  </TabsContent>
+
+  <TabsContent value="icons">
+    <ComponentPreview
+      title="With Icons"
+      description="Left & right icon slots."
+      code={`<Button leftIcon={<CreditCard />}>Statement</Button>
+          <Button rightIcon={<ArrowRight />}>Continue</Button>`}
+    >
+      <div className="flex flex-wrap gap-4">
+        <Button leftIcon={<CreditCard />}>Statement</Button>
+        <Button rightIcon={<ArrowRight />}>Continue</Button>
+        <Button variant="outline" leftIcon={<Download />}>
+          Download
+        </Button>
+        <Button variant="destructive" leftIcon={<AlertTriangle />}>
+          Close Account
+        </Button>
+      </div>
+    </ComponentPreview>
+  </TabsContent>
+
+  <TabsContent value="loading">
+    <ComponentPreview
+      title="Loading State"
+      description="Indicates background work."
+      code={`<Button isLoading>Processing</Button>`}
+    >
+      <Button isLoading>Processing</Button>
+    </ComponentPreview>
+  </TabsContent>
+</Tabs>
+
+## Specialized Buttons
+
+<Tabs defaultValue="copy" className="mt-8">
+  <TabsList className="mb-4">
+    <TabsTrigger value="copy">Copy</TabsTrigger>
+    <TabsTrigger value="delete">Hold‑to‑Delete</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="copy">
+    <ComponentPreview
+      title="CopyButton"
+      description="Copies text to clipboard."
+      code={`<CopyButton value="1234-5678-9012-3456">Account #</CopyButton>`}
+    >
+      <Button value="1234-5678-9012-3456">Account #</Button>
+    </ComponentPreview>
+
+    <Callout className="mt-4">
+      CopyButton relies on the Clipboard API. Consider a fallback for legacy
+      browsers.
+    </Callout>
+  </TabsContent>
+
+  <TabsContent value="delete">
+    <ComponentPreview
+      title="HoldDeleteButton"
+      description="Safety mechanism for destructive actions."
+      code={`<HoldDeleteButton onDelete={() => alert('Deleted!')}>
+  Delete Record
+</HoldDeleteButton>`}
+    >
+      <Button onDelete={() => alert('Deleted!')}>
+        Delete Record
+      </Button>
+    </ComponentPreview>
+
+    <Callout variant="warning" className="mt-4">
+      Use this pattern only for irreversible actions.
+    </Callout>
+  </TabsContent>
+</Tabs>
+
+## Props
+
+<Tabs defaultValue="button" className="mt-6">
+  <TabsList className="mb-4">
+    <TabsTrigger value="button">Button</TabsTrigger>
+    <TabsTrigger value="copy">CopyButton</TabsTrigger>
+    <TabsTrigger value="delete">HoldDeleteButton</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="button">
+    <PropsTable props={buttonProps} />
+  </TabsContent>
+  <TabsContent value="copy">
+    <PropsTable props={copyButtonProps} />
+  </TabsContent>
+  <TabsContent value="delete">
+    <PropsTable props={holdDeleteButtonProps} />
+  </TabsContent>
+</Tabs>
+
+## Accessibility
+
+- Uses semantic `<button>` elements.  
+- Keyboard‑navigable & focus‑visible.  
+- ARIA attributes applied during loading.  
+- Color contrast meets WCAG AA.
+
+<Callout className="mt-4">
+  For icon‑only buttons, include `aria‑label` or visually hidden text.
+</Callout>
+
+## Best Practices
+
+<div className="grid md:grid-cols-2 gap-6 mt-4">
+  <div className="border rounded-lg p-4">
+    <h3 className="text-lg font-medium mb-2">Do</h3>
+    <ul className="list-disc pl-6 space-y-2">
+      <li>Use primary buttons for one primary action.</li>
+      <li>Reserve destructive styling for irreversible tasks.</li>
+      <li>Keep labels short and action‑oriented.</li>
+      <li>Pair icons with meaning, not decoration.</li>
+      <li>Disable buttons when the action is unavailable.</li>
+    </ul>
+  </div>
+
+  <div className="border rounded-lg p-4">
+    <h3 className="text-lg font-medium mb-2">Don't</h3>
+    <ul className="list-disc pl-6 space-y-2">
+      <li>Place several primary buttons side‑by‑side.</li>
+      <li>Use destructive styling for safe actions.</li>
+      <li>Label buttons “Click here”.</li>
+      <li>Replace links with buttons arbitrarily.</li>
+    </ul>
+  </div>
+</div>
+
+## Customization
+
+Tailwind utility classes let you theme buttons quickly:
+
+```tsx
+<Button
+  variant="outline"
+  className="border-emerald-500 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+>
+  Custom Style
+</Button>
+```
+
+Need deeper changes? Extend the `buttonVariants` helper and roll your own:
+
+```tsx
+import { buttonVariants } from '@bank-kit/ui';
+import { cn } from '@/lib/utils';
+
+export function GradientButton(props) {
+  return (
+    <button
+      className={cn(
+        buttonVariants({ variant: 'primary' }),
+        'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600'
+      )}
+      {...props}
+    />
+  );
+}
+```
+  );
+}
+```

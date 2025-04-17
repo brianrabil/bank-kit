@@ -1,5 +1,5 @@
 dictionaries = []
-words = ["nextra", "tanstack", "lucide", "fns"]
+words = ["nextra", "tanstack", "lucide", "fns", "fumadocs"]
 flag_words = []
 ignore_paths = []
 ignore_patterns = []

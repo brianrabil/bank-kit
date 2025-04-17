@@ -2,6 +2,7 @@
 	"name": "bank-kit",
 	"version": "0.1.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "turbo run build",
@@ -16,6 +17,9 @@
 		"turbo": "^2.5.0",
 		"typescript": "^5"
 	},
-	"workspaces": ["apps/*", "packages/*"],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"packageManager": "bun@1.2.5"
 }

@@ -1,0 +1,337 @@
+---
+title: Text
+description: Type scale, usage guidelines, and API for Bank‑Kit’s Text component, powered by cva.
+---
+
+import { Text } from "@bank-kit/ui/components/text";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Card } from 'fumadocs-ui/components/card';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'; 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import * as BankKitTabs from "@bank-kit/ui/components/tabs"; 
+
+## Font Preview (Inter)
+
+<div className="not-prose space-y-4 rounded-lg border bg-card p-6 text-card-foreground">
+
+  {/* "Inter" Label - Using text-lg for slight emphasis */}
+  <Text variant="text-lg">Inter</Text>
+
+  {/* "Ag" Display - Using display-xl based on visual size */}
+  {/* Adding some vertical margin for spacing like in the image */}
+  <Text variant="display-xl" className="my-2 block"> {/* Use block to ensure margin applies correctly */}
+    Ag
+  </Text>
+
+  {/* Character Sets - Default variant (text-md) */}
+  {/* Using a nested div with smaller spacing for these lines */}
+  <div className="space-y-1">
+    <Text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</Text>
+    <Text>abcdefghijklmnopqrstuvwxyz</Text>
+    <Text>0123456789 !@#$%^&*()</Text>
+  </div>
+
+</div>
+
+## Installation
+
+Choose the installation method that best suits your project setup.
+
+<BankKitTabs.Tabs defaultValue="bank-kit">
+  <BankKitTabs.TabsList className="grid w-full grid-cols-3">
+    <BankKitTabs.TabsTrigger value="bank-kit">Bank Kit CLI (recommended)</BankKitTabs.TabsTrigger>
+    <BankKitTabs.TabsTrigger value="shadcn">Shadcn CLI</BankKitTabs.TabsTrigger>
+    <BankKitTabs.TabsTrigger value="manual">Manual</BankKitTabs.TabsTrigger>
+  </BankKitTabs.TabsList>
+
+  <BankKitTabs.TabsContent value="bank-kit">
+      <Tabs defaultIndex={0} groupId="packageManager" items={['npm', 'yarn', 'pnpm', "bun"]} persist>
+        <Tab value="npm">
+          ```bash
+          npx @bank-kit/cli@latest add text
+          ```
+        </Tab >
+        <Tab value="yarn">
+          ```bash
+          yarn dlx @bank-kit/cli@latest add text
+          ```
+        </Tab>
+        <Tab value="pnpm">
+          ```bash
+          pnpm dlx @bank-kit/cli@latest add text
+          ```
+        </Tab>
+        <Tab value="bun">
+          ```bash
+          bunx @bank-kit/cli@latest add text
+          ```
+        </Tab>
+      </Tabs>
+  </BankKitTabs.TabsContent>
+
+  <BankKitTabs.TabsContent value="shadcn">
+       <Tabs defaultIndex={0} groupId="packageManager" items={['npm', 'yarn', 'pnpm', "bun"]} persist>
+         <Tab value="npm">
+            ```bash
+            npx shadcn-ui@latest add text
+            ```
+         </Tab >
+         <Tab value="yarn">
+            ```bash
+            yarn dlx shadcn-ui@latest add text
+            ```
+         </Tab>
+         <Tab value="pnpm">
+            ```bash
+            pnpm dlx shadcn-ui@latest add text
+            ```
+         </Tab>
+         <Tab value="bun">
+            ```bash
+            bunx shadcn-ui@latest add text
+            ```
+         </Tab>
+       </Tabs>
+  </BankKitTabs.TabsContent>
+
+  <BankKitTabs.TabsContent value="manual">
+      <Steps>
+        <Step>
+        #### Install Dependencies
+        Install the required dependencies for the component.
+        <Tabs defaultIndex={0} groupId="packageManager" items={['npm', 'yarn', 'pnpm', "bun"]} persist>
+            <Tab value="npm">
+                ```bash
+                npm install class-variance-authority @radix-ui/react-slot clsx tailwind-merge
+                ```
+            </Tab >
+            <Tab value="yarn">
+                ```bash
+                yarn add class-variance-authority @radix-ui/react-slot clsx tailwind-merge
+                ```
+            </Tab>
+            <Tab value="pnpm">
+                ```bash
+                pnpm add class-variance-authority @radix-ui/react-slot clsx tailwind-merge
+                ```
+            </Tab>
+            <Tab value="bun">
+                ```bash
+                bun add class-variance-authority @radix-ui/react-slot clsx tailwind-merge
+                ```
+            </Tab>
+        </Tabs>
+        </Step>
+        <Step>
+        #### Copy Component Code
+        Copy the `Text.tsx` component code (provided in the previous step or from your library source) into your project, typically within your `components/ui` directory. Update the import paths within the component if necessary.
+
+        TODO: Add code snippet
+        </Step>
+      </Steps>
+  </BankKitTabs.TabsContent>
+</BankKitTabs.Tabs>
+
+## Usage
+
+Import the `Text` component and use the `variant` and `weight` props to apply the desired typographic style. You can also use the `as` prop for semantic HTML elements or `asChild` for composition.
+
+```tsx
+import { Text } from "@bank-kit/ui/components/text";
+
+export default function MyComponent() {
+  return (
+    <div>
+      {/* Use variant and weight */}
+      <Text variant="displaylg" weight="bold">
+        Account Overview
+      </Text>
+
+      {/* Default variant (textmd) and weight (regular) */}
+      <Text>
+        Welcome back! Here's a summary of your recent activity.
+      </Text>
+
+      {/* Use `as` prop for semantic elements */}
+      <Text variant="textxl" weight="semibold" as="h2">
+        Transactions
+      </Text>
+
+      {/* Use `className` for additional styles like color */}
+      <Text variant="textsm" className="text-muted-foreground">
+        Transfers may take up to 2 business days to settle.
+      </Text>
+
+      {/* Use `asChild` to style another component */}
+      <Text variant="textsm" weight="medium" asChild>
+        <a href="/learn-more">Learn More</a>
+      </Text>
+    </div>
+  );
+}
+```
+
+## Type Scale
+
+Displaying each variant with default weight (`regular`). The component automatically renders the appropriate HTML tag (h1-h4, p) based on the variant. The text below is from Robert Bringhurst.
+
+<div className="not-prose space-y-8 rounded-lg border bg-card p-6 text-card-foreground">
+  {/* Display Variants */}
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-2xl (h1)
+    </Text>
+    <Text variant="display-2xl">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-xl (h1)
+    </Text>
+    <Text variant="display-xl">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-lg (h1)
+    </Text>
+    <Text variant="display-lg">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-md (h2)
+    </Text>
+    <Text variant="display-md">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-sm (h3)
+    </Text>
+    <Text variant="display-sm">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      display-xs (h4)
+    </Text>
+    <Text variant="display-xs">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  {/* Divider (Optional) */}
+  <hr className="border-border" />
+
+  {/* Text Variants */}
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      text-xl (p)
+    </Text>
+    <Text variant="text-xl">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      text-lg (p)
+    </Text>
+    <Text variant="text-lg">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      text-md (p) - Default
+    </Text>
+    <Text variant="text-md">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      text-sm (p)
+    </Text>
+    <Text variant="text-sm">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+
+  <div>
+    <Text variant="text-sm" weight="medium" className="mb-1 text-muted-foreground">
+      text-xs (p)
+    </Text>
+    <Text variant="text-xs">Typography is the craft of endowing human language with a durable visual form.</Text>
+  </div>
+</div>
+
+## API Reference
+
+<AutoTypeTable 
+  type={`
+    import * as React from "react";
+    import { TextProps as BaseTextProps } from "../../packages/ui/src/components/text.tsx";
+    export type TextProps = Omit<BaseTextProps, keyof React.HTMLAttributes<HTMLParagraphElement>>
+  `}
+ />
+
+ ## Best Practices
+
+To ensure consistency, accessibility, and maintainability when using the `<Text />` component, consider the following practices:
+
+1.  **Prioritize Semantic HTML:**
+    * Use the `as` prop (e.g., `as="h1"`, `as="label"`) or the `asChild` prop on semantic child elements (like `<button>`, `<a>`) to ensure your document structure is meaningful for assistive technologies and SEO.
+    * Don't rely solely on visual styling (`variant="displaylg"`) to imply structure; use the correct underlying HTML tag.
+    ```tsx
+    // Good: Semantic H2 heading
+    <Text variant="textxl" weight="semibold" as="h2">
+      Section Title
+    </Text>
+
+    // Avoid: Looks like a heading, but is just a paragraph semantically
+    <Text variant="textxl" weight="semibold">
+      Section Title
+    </Text>
+    ```
+
+2.  **Ensure Accessibility (A11y):**
+    * **Color Contrast:** Always check that text has sufficient contrast against its background, meeting at least WCAG AA standards (4.5:1 for normal text, 3:1 for large text). Use browser developer tools or online checkers. Since color is often applied via `className`, be mindful of this during implementation.
+    * **Readable Font Sizes:** Use appropriate `variant` values for readability based on context. `textmd` or `textlg` are generally suitable for body content. Avoid using very small variants (`textxs`) for critical information.
+
+3.  **Maintain Consistency with Variants:**
+    * Leverage the predefined `variant` and `weight` props as much as possible to maintain visual consistency across your application, adhering to the established design system.
+    * Resist the urge to create one-off styles with `className` frequently. If a new style is needed repeatedly, consider adding a new variant to the `cva` configuration in `Text.tsx` and your `tailwind.config.js`.
+
+4.  **Use Font Weights Purposefully:**
+    * Apply `weight="semibold"` or `weight="bold"` intentionally for emphasis, headings, or calls to action.
+    * Use `weight="regular"` for most body text to maximize readability. Avoid excessive use of bold text.
+
+5.  **Align Numerical Data:**
+    * When displaying numbers, especially financial data or figures in tables/lists where vertical alignment matters, apply the `tabular-nums` utility class via `className`. This ensures numbers take up uniform horizontal space.
+    ```tsx
+    <Text variant="textsm" className="tabular-nums">
+      $ 1,234.56
+    </Text>
+    <Text variant="textsm" className="tabular-nums">
+      $    78.90
+    </Text>
+    ```
+
+6.  **Handle Custom Styling with `className`:**
+    * For specific overrides like color, margins, or other utility-based styles not covered by `variant` or `weight`, use the `className` prop with Tailwind utilities.
+    * This keeps the core component focused on typography structure and leverages Tailwind's utility-first approach.
+    ```tsx
+    <Text variant="textlg" className="text-primary mt-4">
+      Important Note
+    </Text>
+    ```
+
+7.  **Use `asChild` for Composition:**
+    * Prefer `asChild` when you need to apply text styles directly to an interactive element (like a link or button) or another React component without introducing an extra wrapping `<span>` or `<div>`.
+    * Use `as` primarily when you simply need to change the semantic HTML tag rendered by the `Text` component itself.
+    ```tsx
+    // Good: Styles applied directly to the anchor tag
+    <Text variant="textsm" weight="medium" asChild>
+      <a href="/terms">Terms of Service</a>
+    </Text>
+
+    // Less Ideal: Adds an extra span around the anchor
+    <span className={textVariants({ variant: 'textsm', weight: 'medium' })}>
+        <a href="/terms">Terms of Service</a>
+    </span>
+    ```

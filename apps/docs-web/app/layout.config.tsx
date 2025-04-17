@@ -9,6 +9,7 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
  */
 export const baseOptions: BaseLayoutProps = {
 	nav: {
+		transparentMode: "top",
 		title: (
 			<>
 				<svg
@@ -17,11 +18,15 @@ export const baseOptions: BaseLayoutProps = {
 					xmlns="http://www.w3.org/2000/svg"
 					aria-label="Logo"
 				>
+					<title>Bank Kit</title>
 					<circle cx={12} cy={12} r={12} fill="currentColor" />
 				</svg>
 				My App
 			</>
 		),
+	},
+	themeSwitch: {
+		mode: "light-dark-system",
 	},
 	links: [
 		{

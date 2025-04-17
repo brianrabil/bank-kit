@@ -21,10 +21,13 @@
 		"typescript": "^5",
 		"@tailwindcss/postcss": "^4.0.14",
 		"postcss": "^8",
-		"tailwindcss": "^4.0.14"
+		"tailwindcss": "^4.1.4"
 	},
 	"exports": {
-		"./*": ["./src/*.ts", "./src/*.tsx"],
+		"./*": [
+			"./src/*.ts",
+			"./src/*.tsx"
+		],
 		"./registry.json": "./registry.json"
 	}
 }
