@@ -1,0 +1,986 @@
+---
+title: "Data Fetching in Next.js (App Router) (v13-14+)"
+description: "Learn how to fetch data in Next.js App Router with modern patterns and best practices"
+---
+
+import { Mermaid } from '../../../components/mermaid/mermaid';
+
+### Enhanced Data Fetching in Next.js (App Router)
+
+I've analyzed your documentation on data fetching in Next.js App Router and have enhanced it with improved explanations, additional twoslash annotations, and Mermaid diagrams to visualize key concepts. Here's the improved version:
+
+## Data Flow Visualization
+
+Let's start with a high-level overview of data fetching patterns in Next.js App Router:
+
+<Mermaid
+  chart="
+graph TD
+    A[Client Browser] --> B[Next.js Server]
+    B --> C[Data Sources]
+    B --> D[Cache Layer]
+    B --> E[HTML + Minimal JS]
+    E --> A
+    D --> B
+  "
+/>
+
+## Server Components
+
+Server Components are the foundation of data fetching in the App Router. They run exclusively on the server, reducing client-side JavaScript:
+
+```tsx twoslash
+// @noErrors
+// Type definitions for our data models
+type Account = {
+  id: string;
+  name: string;
+  balance: number;
+  type: 'checking' | 'savings' | 'investment';
+  lastUpdated: string;
+};
+
+// Function type definition
+type FetchAccountsFn = () => Promise<Account[]>;
+```
+
+```tsx twoslash
+// @noErrors
+// Server Components run on the server, reducing client-side JavaScript
+// This improves performance and reduces bundle size
+import { fetchAccounts } from "@/lib/api";
+
+export default async function AccountsPage() {
+  const accounts = await fetchAccounts();
+  
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Your Accounts</h1>
+      {accounts.length === 0 ? (
+        <p className="text-gray-500">No accounts found.</p>
+      ) : (
+        <ul className="space-y-2">
+          {accounts.map((account) => (
+            <li key={account.id} className="border p-3 rounded-md">
+              <div className="flex justify-between">
+                <span className="font-medium">{account.name}</span>
+                <span className="font-bold">${account.balance.toLocaleString()}</span>
+              </div>
+              <div className="text-sm text-gray-500">
+                {account.type} • Last updated: {new Date(account.lastUpdated).toLocaleDateString()}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+### Key Benefits of Server Components
+
+<Mermaid
+  chart="
+graph TD
+    A[Server Components] --> B[Reduced Client JS]
+    A --> C[Direct DB Access]
+    A --> D[SEO Friendly]
+    A --> E[Faster TTFB]
+    
+    F[Client Components] --> G[Interactivity]
+    F --> H[Client-side State]
+    F --> I[Browser APIs]
+    F --> J[Event Handlers]
+  "
+/>
+
+## Route Handlers
+
+Route Handlers provide a modern way to create API endpoints. They're perfect for creating RESTful APIs and handling client-side data fetching:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/db.ts
+export async function getAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500 },
+    { id: '2', name: 'Savings', balance: 5000 }
+  ];
+}
+
+export async function getAccount(id: string) {
+  // Implementation details omitted
+  return { id, name: 'Checking', balance: 1500 };
+}
+
+export async function updateAccount(id: string, data: any) {
+  // Implementation details omitted
+  return { id, ...data };
+}
+// @filename: app/api/accounts/route.ts
+// ---cut---
+// Route Handlers are serverless functions that run on the edge
+// They're perfect for API endpoints that need to be called from client components
+import { NextResponse } from "next/server";
+import { getAccounts } from "@/lib/db";
+
+export async function GET() {
+  try {
+    const accounts = await getAccounts();
+    return NextResponse.json(accounts);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to fetch accounts" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+Dynamic route handlers can access route parameters:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/db.ts
+export async function getAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500 },
+    { id: '2', name: 'Savings', balance: 5000 }
+  ];
+}
+
+export async function getAccount(id: string) {
+  // Implementation details omitted
+  return { id, name: 'Checking', balance: 1500 };
+}
+
+export async function updateAccount(id: string, data: any) {
+  // Implementation details omitted
+  return { id, ...data };
+}
+// @filename: app/api/accounts/[id]/route.ts
+// ---cut---
+// Dynamic route handlers can access route parameters
+// They're ideal for RESTful API endpoints with resource identifiers
+import { NextResponse } from "next/server";
+import { getAccount, updateAccount } from "@/lib/db";
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const account = await getAccount(params.id);
+    return NextResponse.json(account);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to fetch account" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json();
+    const account = await updateAccount(params.id, body);
+    return NextResponse.json(account);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to update account" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### HTTP Methods in Route Handlers
+
+<Mermaid
+  chart="
+graph TD
+    A[Route Handler] --> B[GET]
+    A --> C[POST]
+    A --> D[PUT]
+    A --> E[PATCH]
+    A --> F[DELETE]
+    A --> G[OPTIONS]
+    A --> H[HEAD]
+    
+    B --> I[Read data]
+    C --> J[Create data]
+    D --> K[Replace data]
+    E --> L[Update data]
+    F --> M[Delete data]
+    
+    I --> N[Database/API]
+    J --> N
+    K --> N
+    L --> N
+    M --> N
+  "
+/>
+
+## Server Actions
+
+Server Actions allow you to run server code directly from client components, perfect for form submissions and data mutations:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/db.ts
+export async function updateAccount(id: string, data: any) {
+  // Implementation details omitted
+  return { id, ...data };
+}
+// @filename: app/actions.ts
+// ---cut---
+// Server Actions run on the server but can be called from client components
+// They're perfect for form submissions and data mutations
+"use server";
+
+import { updateAccount } from "@/lib/db";
+
+// Define a more specific type for the data parameter
+type AccountUpdateData = {
+  name?: string;
+  balance?: number;
+  type?: 'checking' | 'savings' | 'investment';
+};
+
+export async function updateAccountAction(
+  id: string, 
+  data: AccountUpdateData
+) {
+  try {
+    const account = await updateAccount(id, data);
+    //       
+    return { success: true, account };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to update account" 
+    };
+  }
+}
+```
+
+Using Server Actions with React's useTransition for optimistic UI updates:
+
+```tsx twoslash
+// @noErrors
+// @filename: app/actions.ts
+"use server";
+export async function updateAccountAction(id: string, data: any) {
+  return { success: true, account: { id, ...data } };
+}
+// @filename: components/AccountForm.tsx
+// ---cut---
+// useTransition allows for optimistic UI updates
+// It provides a way to show loading states without blocking the UI
+"use client";
+
+import { updateAccountAction } from "@/app/actions";
+import { useTransition, useState } from "react";
+
+type Account = {
+  id: string;
+  name: string;
+  balance: number;
+};
+
+export function AccountForm({ account }: { account: Account }) {
+  const [isPending, startTransition] = useTransition();
+  //    
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setError(null);
+    
+    startTransition(async () => {
+      const result = await updateAccountAction(account.id, {
+        name: formData.get("name") as string,
+        // other fields
+      });
+      
+      if (!result.success) {
+        // Handle error
+        setError(result.error);
+      }
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Account Name
+        </label>
+        <input 
+          id="name"
+          name="name" 
+          defaultValue={account.name}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+      </div>
+      
+      {error && (
+        <div className="text-red-500 text-sm">{error}</div>
+      )}
+      
+      <button 
+        type="submit" 
+        disabled={isPending}
+        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
+      >
+        {isPending ? "Saving..." : "Save"}
+      </button>
+    </form>
+  );
+}
+```
+
+### Server Actions Flow
+
+<Mermaid
+  chart="
+sequenceDiagram
+    participant C as Client Component
+    participant S as Server Action
+    participant DB as Database/API
+    
+    C->>S: Call Server Action
+    S->>DB: Process Request
+    DB-->>S: Return Result
+    S-->>C: Return Response
+  "
+/>
+
+## Streaming and Suspense
+
+Streaming and Suspense improve user experience by showing content progressively:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/api.ts
+export async function fetchAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500 },
+    { id: '2', name: 'Savings', balance: 5000 }
+  ];
+}
+// @filename: components/LoadingSkeleton.tsx
+export function LoadingSkeleton() {
+  return <div>Loading...</div>;
+}
+// @filename: components/AccountList.tsx
+export function AccountList({ initialAccounts }: { initialAccounts: any[] }) {
+  return <div>Account List</div>;
+}
+// @filename: app/accounts/page.tsx
+// ---cut---
+// Suspense allows for streaming HTML to the client
+// This improves perceived performance by showing content progressively
+import { Suspense } from "react";
+import { fetchAccounts } from "@/lib/api";
+import { AccountList } from "@/components/AccountList";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+export default function AccountsPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Your Accounts</h1>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <AccountsContent />
+      </Suspense>
+    </div>
+  );
+}
+
+async function AccountsContent() {
+  // This component will suspend while fetching data
+  const accounts = await fetchAccounts();
+  //    
+  
+  return <AccountList initialAccounts={accounts} />;
+}
+```
+
+### Streaming with Suspense Visualization
+
+<Mermaid
+  chart="
+sequenceDiagram
+    participant B as Browser Request
+    participant S as Server
+    participant C as Client
+    
+    B->>S: Request Page
+    S->>S: Render Shell
+    S-->>C: Send Initial HTML
+    C->>C: Hydrate Shell
+    S->>S: Render Suspended Component
+    S-->>C: Stream HTML Chunk
+    C->>C: Update DOM
+  "
+/>
+
+## Caching Strategies
+
+Next.js App Router provides built-in caching mechanisms to optimize performance:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/api.ts
+export async function fetchAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500 },
+    { id: '2', name: 'Savings', balance: 5000 }
+  ];
+}
+// @filename: components/AccountList.tsx
+export function AccountList({ initialAccounts }: { initialAccounts: any[] }) {
+  return <div>Account List</div>;
+}
+// @filename: app/accounts/page.tsx
+// ---cut---
+// Revalidate every 60 seconds
+// This balances freshness with performance
+import { fetchAccounts } from "@/lib/api";
+import { AccountList } from "@/components/AccountList";
+
+// Page-level revalidation setting
+export const revalidate = 60; // seconds
+
+export default async function AccountsPage() {
+  const accounts = await fetchAccounts();
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Your Accounts</h1>
+      <AccountList initialAccounts={accounts} />
+    </div>
+  );
+}
+```
+
+Fetch-level caching configuration:
+
+```tsx twoslash
+// @noErrors
+// ---cut---
+// The next option configures caching behavior
+// This reduces database load and improves response times
+export async function fetchAccounts() {
+  // Fetch-level cache configuration
+  const res = await fetch("https://api.example.com/accounts", {
+    next: {
+      revalidate: 60, // Revalidate every 60 seconds
+      tags: ['accounts'], // Cache tag for targeted revalidation
+    },
+  });
+  
+  if (!res.ok) {
+    // Proper error handling with status code
+    const errorText = await res.text();
+    throw new Error(`Failed to fetch accounts: ${res.status} ${errorText}`);
+  }
+  
+  return res.json();
+}
+```
+
+### Caching Strategies Visualization
+
+<Mermaid
+  chart="
+graph TD
+    A[Request] --> B{Cache Valid?}
+    B -->|Yes| C[Serve from Cache]
+    B -->|No| D[Fetch Fresh Data]
+    D --> E[Update Cache]
+    E --> F[Serve Response]
+    
+    G[Revalidation Methods] --> H[Time-based]
+    G --> I[On-demand]
+    G --> J[Tag-based]
+    
+    H --> K[revalidate: 60]
+    I --> L[revalidatePath()]
+    J --> M[revalidateTag()]
+  "
+/>
+
+## Performance Optimization
+
+### Parallel Data Fetching
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/api.ts
+export async function fetchAccount(id: string) {
+  // Implementation details omitted
+  return { id, name: 'Checking', balance: 1500 };
+}
+
+export async function fetchTransactions(accountId: string) {
+  // Implementation details omitted
+  return [
+    { id: '1', amount: 100, description: 'Deposit', date: '2023-01-01' },
+    { id: '2', amount: -50, description: 'Withdrawal', date: '2023-01-02' }
+  ];
+}
+// @filename: components/AccountDetails.tsx
+export function AccountDetails({ account }: { account: any }) {
+  return <div>Account Details</div>;
+}
+// @filename: components/TransactionList.tsx
+export function TransactionList({ initialTransactions, accountId }: { initialTransactions: any[], accountId: string }) {
+  return <div>Transaction List</div>;
+}
+// @filename: components/LoadingSkeleton.tsx
+export function LoadingSkeleton() {
+  return <div>Loading...</div>;
+}
+// @filename: app/accounts/[id]/page.tsx
+// ---cut---
+// Promise.all allows for parallel data fetching
+// This reduces the total time needed to fetch multiple resources
+import { fetchAccount, fetchTransactions } from "@/lib/api";
+import { AccountDetails } from "@/components/AccountDetails";
+import { TransactionList } from "@/components/TransactionList";
+import { Suspense } from "react";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+export default function AccountPage({ params }: { params: { id: string } }) {
+  return (
+    <div className="container mx-auto p-4">
+      <Suspense fallback={<LoadingSkeleton />}>
+        <AccountContent accountId={params.id} />
+      </Suspense>
+    </div>
+  );
+}
+
+async function AccountContent({ accountId }: { accountId: string }) {
+  // Fetch account and transactions in parallel
+  const [account, transactions] = await Promise.all([
+    fetchAccount(accountId),
+    fetchTransactions(accountId),
+  ]);
+
+  return (
+    <div className="space-y-6">
+      <AccountDetails account={account} />
+      <TransactionList 
+        initialTransactions={transactions} 
+        accountId={accountId} 
+      />
+    </div>
+  );
+}
+```
+
+### Selective Hydration
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/api.ts
+export async function fetchAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500 },
+    { id: '2', name: 'Savings', balance: 5000 }
+  ];
+}
+// @filename: components/AccountList.tsx
+export function AccountList({ initialAccounts }: { initialAccounts: any[] }) {
+  return <div>Account List</div>;
+}
+// @filename: components/LoadingSkeleton.tsx
+export function LoadingSkeleton() {
+  return <div>Loading...</div>;
+}
+// @filename: app/accounts/page.tsx
+// ---cut---
+// This component will be hydrated on the client
+// Selective hydration reduces the initial JavaScript bundle size
+import { fetchAccounts } from "@/lib/api";
+import { AccountList } from "@/components/AccountList";
+import { Suspense } from "react";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+export default function AccountsPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Your Accounts</h1>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <AccountsContent />
+      </Suspense>
+    </div>
+  );
+}
+
+async function AccountsContent() {
+  const accounts = await fetchAccounts();
+  
+  return (
+    <div className="space-y-6">
+      <AccountList initialAccounts={accounts} />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <AccountSummary accounts={accounts} />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+Client component with React hooks:
+
+```tsx twoslash
+// @noErrors
+// ---cut---
+// Client components can use React hooks
+// They're hydrated on the client for interactivity
+"use client";
+
+import { useState, useEffect } from "react";
+
+type Account = {
+  id: string;
+  name: string;
+  balance: number;
+};
+
+export function AccountSummary({ accounts }: { accounts: Account[] }) {
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [highestBalance, setHighestBalance] = useState<Account | null>(null);
+  
+  useEffect(() => {
+    // Calculate total balance on the client
+    const total = accounts.reduce((sum, account) => sum + account.balance, 0);
+    setTotalBalance(total);
+    
+    // Find account with highest balance
+    const highest = accounts.reduce((max, account) => 
+      account.balance > (max?.balance || 0) ? account : max, 
+      null as Account | null
+    );
+    setHighestBalance(highest);
+  }, [accounts]);
+  
+  return (
+    <div className="mt-4 p-4 border rounded-md bg-gray-50">
+      <h2 className="text-lg font-semibold mb-2">Account Summary</h2>
+      <p className="mb-1">Total Balance: <span className="font-bold">${totalBalance.toLocaleString()}</span></p>
+      {highestBalance && (
+        <p className="text-sm text-gray-600">
+          Highest Balance: {highestBalance.name} (${highestBalance.balance.toLocaleString()})
+        </p>
+      )}
+    </div>
+  );
+}
+```
+
+## Data Fetching Decision Tree
+
+<Mermaid
+  chart="
+graph TD
+    A[Need to fetch data?] -->|Yes| B[Where is data needed?]
+    A -->|No| C[No Action Needed]
+    
+    B -->|Server| D[Use Server Component]
+    B -->|Client| E[What's the use case?]
+    
+    E -->|API endpoint| F[Use Route Handler]
+    E -->|Form submission| G[Use Server Action]
+    E -->|Client-side fetch| H[Use SWR or React Query]
+    
+    D --> I[Caching needed?]
+    F --> I
+    G --> I
+    H --> I
+    
+    I -->|Yes| J[How to cache?]
+    I -->|No| K[No Caching]
+    
+    J -->|Time-based| L[Set revalidate]
+    J -->|On-demand| M[Use revalidatePath()]
+    J -->|Tag-based| N[Use revalidateTag()]
+  "
+/>
+
+## Performance, Costs, and Usage Recommendations
+
+### Performance Considerations
+
+1. **Server Components vs. Client Components**:
+
+1. Server Components reduce client-side JavaScript, improving initial page load
+2. Use Client Components only when interactivity is required
+3. The App Router automatically optimizes component rendering
+
+
+
+2. **Data Fetching Strategies**:
+
+1. Parallel data fetching reduces total fetch time
+2. Streaming with Suspense improves perceived performance
+3. Caching reduces database load and improves response times
+
+
+
+3. **Bundle Size Optimization**:
+
+1. Selective hydration reduces initial JavaScript bundle size
+2. Server Components don't contribute to client bundle size
+3. Dynamic imports can further reduce bundle size
+
+
+
+
+
+### Cost Implications
+
+1. **Serverless Function Execution**:
+
+1. Route Handlers and Server Actions run as serverless functions
+2. Costs depend on execution time and memory usage
+3. Cold starts can impact performance for infrequently accessed routes
+
+
+
+2. **Database Connections**:
+
+1. Each serverless function execution may open a new database connection
+2. Connection pooling can reduce costs for high-traffic applications
+3. Caching reduces database query frequency
+
+
+
+3. **Edge Computing**:
+
+1. Edge functions may have different pricing than traditional serverless functions
+2. Consider data locality to reduce data transfer costs
+3. Evaluate whether edge computing is necessary for your use case
+
+
+
+
+
+### When to Use Each Pattern
+
+1. **Server Components**:
+
+1. Use for static or dynamic content that doesn't require interactivity
+2. Ideal for data-heavy pages like account listings or transaction history
+3. Best for SEO-critical content
+
+
+
+2. **Route Handlers**:
+
+1. Use for API endpoints that need to be called from client components
+2. Ideal for CRUD operations and data mutations
+3. Best for external integrations and webhooks
+
+
+
+3. **Server Actions**:
+
+1. Use for form submissions and data mutations from client components
+2. Ideal for multi-step forms and complex data operations
+3. Best for operations that require server-side validation
+
+
+
+4. **Client Components**:
+
+1. Use only when interactivity is required
+2. Ideal for forms, interactive charts, and real-time updates
+3. Best for user-specific functionality
+
+
+
+
+
+## Real-World Implementation Example
+
+Let's examine a real-world implementation of an accounts page using these patterns:
+
+```tsx twoslash
+// @noErrors
+// @filename: lib/api.ts
+export async function fetchAccounts() {
+  // Implementation details omitted
+  return [
+    { id: '1', name: 'Checking', balance: 1500, type: 'checking' as const },
+    { id: '2', name: 'Savings', balance: 5000, type: 'savings' as const }
+  ];
+}
+// @filename: app/accounts/page.tsx
+// ---cut---
+import { Suspense } from "react";
+import { fetchAccounts } from "@/lib/api";
+
+// Define strong types for our data
+type Account = {
+  id: string;
+  name: string;
+  balance: number;
+  type: 'checking' | 'savings' | 'investment';
+};
+
+export default function AccountsPage() {
+  return (
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Your Financial Accounts</h1>
+      <Suspense fallback={<AccountsSkeleton />}>
+        <AccountsContent />
+      </Suspense>
+    </div>
+  );
+}
+
+function AccountsSkeleton() {
+  return (
+    <div className="space-y-4">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="border rounded-lg p-4 animate-pulse">
+          <div className="h-6 bg-gray-200 rounded w-1/3 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+async function AccountsContent() {
+  const accounts = await fetchAccounts();
+  
+  return (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {accounts.map((account) => (
+        <AccountCard key={account.id} account={account} />
+      ))}
+    </div>
+  );
+}
+
+function AccountCard({ account }: { account: Account }) {
+  return (
+    <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-xl font-semibold">{account.name}</h2>
+        <span className={`px-2 py-1 text-xs rounded-full ${
+          account.type === 'checking' ? 'bg-blue-100 text-blue-800' : 
+          account.type === 'savings' ? 'bg-green-100 text-green-800' : 
+          'bg-purple-100 text-purple-800'
+        }`}>
+          {account.type.charAt(0).toUpperCase() + account.type.slice(1)}
+        </span>
+      </div>
+      
+      <div className="text-2xl font-bold mb-4">
+        ${account.balance.toLocaleString()}
+      </div>
+      
+      <div className="flex justify-between">
+        <button className="text-sm text-blue-600 hover:underline">
+          View Transactions
+        </button>
+        <button className="text-sm text-gray-600 hover:underline">
+          Transfer Funds
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Server Components by Default**: Start with Server Components and only use Client Components when necessary.
+2. **Implement Proper Error Handling**: Use error boundaries and provide clear error messages.
+3. **Optimize Caching Strategies**: Configure appropriate revalidation times.
+4. **Use Server Actions for Mutations**: Implement form submissions and data mutations using Server Actions.
+5. **Implement Streaming**: Use Suspense for better loading states.
+6. **Use Parallel Data Fetching**: Fetch multiple data sources in parallel when possible.
+7. **Implement Selective Hydration**: Hydrate only the components that need interactivity.
+8. **Secure API Calls**: Ensure all API calls are properly authenticated and authorized.
+9. **Monitor Performance**: Track and optimize data fetching performance.
+
+
+### Error Handling Best Practices
+
+```tsx twoslash
+// @noErrors
+// @filename: app/error.tsx
+// ---cut---
+"use client";
+
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] p-6">
+      <h2 className="text-2xl font-bold mb-4">Something went wrong!</h2>
+      <p className="text-gray-600 mb-6 text-center max-w-md">
+        We apologize for the inconvenience. An error occurred while loading your accounts.
+      </p>
+      <div className="flex gap-4">
+        <Button onClick={() => reset()}>Try again</Button>
+        <Button variant="outline" onClick={() => window.location.href = "/"}>
+          Go to homepage
+        </Button>
+      </div>
+      {process.env.NODE_ENV === "development" && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-md max-w-full overflow-auto">
+          <p className="font-mono text-sm text-red-600">{error.message}</p>
+          {error.stack && (
+            <pre className="mt-2 text-xs text-gray-700">{error.stack}</pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Next Steps
+
+- [Authentication Guide](/docs/guides/authentication)
+- [Form Handling Guide](/docs/guides/form-handling)
+- [State Management Guide](/docs/guides/state-management)
+- [Performance Optimization Guide](/docs/guides/performance)
+- [Deployment Guide](/docs/guides/deployment)
+
+
+## Summary
+
+This enhanced documentation provides a comprehensive overview of data fetching in Next.js App Router. By leveraging Server Components, Route Handlers, and Server Actions, you can build performant and scalable applications with optimal user experiences. The added Mermaid diagrams help visualize complex concepts, while the improved code examples with twoslash annotations make it easier to understand the types and patterns being used.
+
+Remember to consider the performance implications and cost factors when choosing your data fetching strategy, and follow the best practices outlined in this guide to ensure your application is both efficient and maintainable.

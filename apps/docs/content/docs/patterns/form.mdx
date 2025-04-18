@@ -1,0 +1,330 @@
+---
+title: Form Patterns
+description: Complex form patterns for financial applications
+---
+
+# Form Patterns
+
+Form patterns in Bank Kit UI simplify the creation of complex financial forms with features like multi-step workflows, dynamic field generation, and guided form completion. These patterns are designed to be customizable, accessible, and compliant with financial industry standards.
+
+## Available Patterns
+
+### Multi-step Form
+
+The Multi-step Form pattern breaks complex forms into manageable steps, improving user experience and completion rates.
+
+```tsx
+import { MultiStepForm } from "@bank-kit/ui/patterns/form";
+
+export default function LoanApplicationPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <MultiStepForm />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Step navigation
+- Progress indicator
+- Step validation
+- Data persistence
+- Step summary
+- Back/forward navigation
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { MultiStepForm } from "@bank-kit/ui/patterns/form";
+
+export default function CustomLoanApplicationPage() {
+  return (
+    <MultiStepForm 
+      steps={[
+        { id: "personal", title: "Personal Information", component: PersonalInfoStep },
+        { id: "financial", title: "Financial Information", component: FinancialInfoStep },
+        { id: "documents", title: "Document Upload", component: DocumentUploadStep },
+        { id: "review", title: "Review & Submit", component: ReviewStep }
+      ]}
+      onSubmit={async (data) => {
+        // Custom submission logic
+        console.log(data);
+      }}
+      onStepChange={(currentStep, previousStep) => {
+        // Custom step change logic
+        console.log(currentStep, previousStep);
+      }}
+      showProgressIndicator={true}
+      allowStepSkipping={false}
+      persistFormData={true}
+    />
+  );
+}
+```
+
+### Dynamic Form
+
+The Dynamic Form pattern allows for forms with fields that change based on user input or external data.
+
+```tsx
+import { DynamicForm } from "@bank-kit/ui/patterns/form";
+
+export default function TaxFilingPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <DynamicForm />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Conditional fields
+- Field dependencies
+- Dynamic validation
+- Field templates
+- Field groups
+- Field arrays
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { DynamicForm } from "@bank-kit/ui/patterns/form";
+
+export default function CustomTaxFilingPage() {
+  return (
+    <DynamicForm 
+      schema={taxFormSchema}
+      onSubmit={async (data) => {
+        // Custom submission logic
+        console.log(data);
+      }}
+      onFieldChange={(field, value) => {
+        // Custom field change logic
+        console.log(field, value);
+      }}
+      showFieldLabels={true}
+      showFieldHelp={true}
+      showFieldErrors={true}
+      validateOnChange={true}
+      validateOnBlur={true}
+    />
+  );
+}
+```
+
+### Form Wizard
+
+The Form Wizard pattern guides users through complex forms with contextual help and validation.
+
+```tsx
+import { FormWizard } from "@bank-kit/ui/patterns/form";
+
+export default function InvestmentProfilePage() {
+  return (
+    <div className="container mx-auto py-8">
+      <FormWizard />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Guided completion
+- Contextual help
+- Inline validation
+- Progress tracking
+- Data persistence
+- Step branching
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { FormWizard } from "@bank-kit/ui/patterns/form";
+
+export default function CustomInvestmentProfilePage() {
+  return (
+    <FormWizard 
+      steps={[
+        { id: "goals", title: "Investment Goals", component: GoalsStep, help: "Define your investment objectives" },
+        { id: "risk", title: "Risk Tolerance", component: RiskStep, help: "Assess your risk tolerance" },
+        { id: "timeframe", title: "Investment Timeframe", component: TimeframeStep, help: "Determine your investment horizon" },
+        { id: "preferences", title: "Investment Preferences", component: PreferencesStep, help: "Set your investment preferences" },
+        { id: "summary", title: "Profile Summary", component: SummaryStep, help: "Review your investment profile" }
+      ]}
+      onSubmit={async (data) => {
+        // Custom submission logic
+        console.log(data);
+      }}
+      onStepChange={(currentStep, previousStep) => {
+        // Custom step change logic
+        console.log(currentStep, previousStep);
+      }}
+      showHelp={true}
+      showProgress={true}
+      persistFormData={true}
+      allowStepSkipping={false}
+    />
+  );
+}
+```
+
+### Search Interface
+
+The Search Interface pattern provides advanced search functionality for financial data.
+
+```tsx
+import { SearchInterface } from "@bank-kit/ui/patterns/form";
+
+export default function TransactionSearchPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <SearchInterface />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Advanced filters
+- Search suggestions
+- Search history
+- Saved searches
+- Search results
+- Result pagination
+- Result sorting
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { SearchInterface } from "@bank-kit/ui/patterns/form";
+
+export default function CustomTransactionSearchPage() {
+  return (
+    <SearchInterface 
+      onSearch={async (query, filters) => {
+        // Custom search logic
+        console.log(query, filters);
+      }}
+      onFilterChange={(filters) => {
+        // Custom filter change logic
+        console.log(filters);
+      }}
+      onSortChange={(sort) => {
+        // Custom sort change logic
+        console.log(sort);
+      }}
+      showSuggestions={true}
+      showHistory={true}
+      showSavedSearches={true}
+      defaultFilters={{
+        dateRange: "last30days",
+        transactionType: "all",
+        minAmount: null,
+        maxAmount: null
+      }}
+      defaultSort="date-desc"
+    />
+  );
+}
+```
+
+### Filter Interface
+
+The Filter Interface pattern provides tools for filtering and refining financial data.
+
+```tsx
+import { FilterInterface } from "@bank-kit/ui/patterns/form";
+
+export default function AccountFilterPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <FilterInterface />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Multiple filter types
+- Filter combinations
+- Filter presets
+- Filter persistence
+- Filter sharing
+- Filter reset
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { FilterInterface } from "@bank-kit/ui/patterns/form";
+
+export default function CustomAccountFilterPage() {
+  return (
+    <FilterInterface 
+      filters={[
+        { id: "accountType", type: "select", label: "Account Type", options: ["Checking", "Savings", "Investment", "Credit"] },
+        { id: "balance", type: "range", label: "Balance Range", min: 0, max: 1000000, step: 1000 },
+        { id: "status", type: "checkbox", label: "Account Status", options: ["Active", "Inactive", "Pending"] },
+        { id: "dateOpened", type: "dateRange", label: "Date Opened" }
+      ]}
+      onFilterChange={(filters) => {
+        // Custom filter change logic
+        console.log(filters);
+      }}
+      onFilterReset={() => {
+        // Custom filter reset logic
+        console.log("Filters reset");
+      }}
+      onFilterShare={(filters) => {
+        // Custom filter share logic
+        console.log(filters);
+      }}
+      showPresets={true}
+      showPersistence={true}
+      showSharing={true}
+      defaultFilters={{
+        accountType: "all",
+        balance: { min: null, max: null },
+        status: ["Active"],
+        dateOpened: { start: null, end: null }
+      }}
+    />
+  );
+}
+```
+
+## Best Practices
+
+When implementing form patterns in your financial application, consider the following best practices:
+
+1. **User Experience**: Design form flows that are intuitive and user-friendly.
+2. **Accessibility**: Ensure all form patterns are accessible to users with disabilities.
+3. **Responsive Design**: Test form patterns across different device sizes and orientations.
+4. **Performance**: Monitor and optimize form pattern performance, especially for complex forms.
+5. **Compliance**: Ensure form patterns meet regulatory requirements for financial applications.
+6. **Validation**: Implement comprehensive validation for all form inputs.
+7. **Error Handling**: Provide clear and helpful error messages to users.
+8. **Data Persistence**: Implement form data persistence to prevent data loss.
+
+## Next Steps
+
+- [Authentication Patterns](/docs/patterns/authentication)
+- [Dashboard Patterns](/docs/patterns/dashboard)
+- [Data Management Patterns](/docs/patterns/data-management)
+- [Communication Patterns](/docs/patterns/communication) 

@@ -1,0 +1,164 @@
+---
+title: Container
+description: A responsive layout container with configurable width and gutter for financial and banking applications.
+sidebar:
+  label: Container
+  order: 20
+---
+
+import { Container } from '@bank-kit/ui/components/container';
+import { containerVariants } from '@bank-kit/ui/components/container';
+import { ComponentPreview, PropsTable } from '@bank-kit/ui/components/docs-components';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@bank-kit/ui/components/ui/tabs';
+import { Callout } from '@bank-kit/ui/components/callout';
+import { Separator } from '@bank-kit/ui/components/ui/separator';
+
+export const containerProps = [
+  {
+    name: 'width',
+    type: `"full" | "container" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl"`,
+    defaultValue: '"7xl"',
+    description: 'Controls the maximum width of the container.',
+  },
+  {
+    name: 'gutter',
+    type: `"none" | "responsive" | "always"`,
+    defaultValue: '"responsive"',
+    description: 'Horizontal padding utilities applied to the container.',
+  },
+  {
+    name: 'asChild',
+    type: 'boolean',
+    defaultValue: 'false',
+    description: 'Render as a Radix Slot to merge props with a child element.',
+  },
+  {
+    name: 'className',
+    type: 'string',
+    description: 'Additional Tailwind CSS classes.',
+  },
+  {
+    name: 'children',
+    type: 'ReactNode',
+    description: 'Content to be wrapped by the container.',
+  },
+];
+
+## Overview
+
+The **Container** component provides a flexible wrapper for layout sections.  
+It centers content, enforces width constraints, and applies consistent horizontal padding (gutter).
+
+<div className="mt-6">
+  <ComponentPreview
+    title="Default Container"
+    description="Centered at 7xl with responsive gutter."
+    code={`<Container>
+  <div>Your content here</div>
+</Container>`}
+  >
+    <Container>
+      <div className="border p-4">Your content here</div>
+    </Container>
+  </ComponentPreview>
+</div>
+
+## Installation
+
+```bash
+npm install @bank-kit/ui
+```
+
+```tsx
+import { Container } from '@bank-kit/ui';
+```
+
+## Usage
+
+<Tabs defaultValue="width" className="mt-6">
+  <TabsList className="mb-4">
+    <TabsTrigger value="width">Width</TabsTrigger>
+    <TabsTrigger value="gutter">Gutter</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="width">
+    <ComponentPreview
+      title="Width Variants"
+      description="Different max-width presets."
+      code={`<Container width="full">...</Container>
+<Container width="container">...</Container>
+<Container width="3xl">...</Container>`}
+    >
+      <div className="space-y-4">
+        <Container width="full">
+          <div className="border p-4">width="full"</div>
+        </Container>
+        <Container width="container">
+          <div className="border p-4">width="container"</div>
+        </Container>
+        <Container width="3xl">
+          <div className="border p-4">width="3xl"</div>
+        </Container>
+      </div>
+    </ComponentPreview>
+  </TabsContent>
+
+  <TabsContent value="gutter">
+    <ComponentPreview
+      title="Gutter Variants"
+      description="Control horizontal padding."
+      code={`<Container gutter="none">...</Container>
+<Container gutter="responsive">...</Container>
+<Container gutter="always">...</Container>`}
+    >
+      <div className="space-y-4">
+        <Container gutter="none">
+          <div className="border p-4">gutter="none"</div>
+        </Container>
+        <Container gutter="responsive">
+          <div className="border p-4">gutter="responsive"</div>
+        </Container>
+        <Container gutter="always">
+          <div className="border p-4">gutter="always"</div>
+        </Container>
+      </div>
+    </ComponentPreview>
+  </TabsContent>
+</Tabs>
+
+<Separator className="my-8" />
+
+## Props
+
+<PropsTable props={containerProps} />
+
+<Callout className="mt-8">
+  The Container is a purely layout component—no interactive semantics are added.
+</Callout>
+
+## Best Practices
+
+- Use **width** presets to enforce consistent breakpoints across pages.  
+- Adjust **gutter** to match design spacing requirements (responsive vs. always).  
+- Combine with grid or flex utilities for complex layouts.  
+- Use `asChild` sparingly when you need to avoid extra wrapper DOM nodes.
+
+## Customization
+
+Override or extend variants by importing and using `containerVariants`:
+
+```tsx
+import { containerVariants } from '@bank-kit/ui/components/container';
+import { cn } from '@/lib/utils';
+
+export function CustomContainer(props) {
+  const classNames = cn(
+    containerVariants({ width: '5xl', gutter: 'always' }),
+    'bg-gray-50 rounded-lg',
+    props.className
+  );
+  return <div className={classNames}>{props.children}</div>;
+}
+```
+```markdown
+```

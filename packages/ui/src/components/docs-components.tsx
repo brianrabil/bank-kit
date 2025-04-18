@@ -146,7 +146,7 @@ export interface PropsTableProps {
  * @component
  */
 export const PropsTable: React.FC<PropsTableProps> = ({ props, className }) => (
-	<div className={cn("rounded-md border", className)}>
+	<div className={cn(className)}>
 		<Table>
 			<TableHeader>
 				<TableRow>

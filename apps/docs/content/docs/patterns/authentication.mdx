@@ -1,0 +1,423 @@
+---
+title: Authentication Patterns
+description: Secure and user-friendly authentication patterns for financial applications
+---
+
+# Authentication Patterns
+
+Authentication patterns in Bank Kit UI provide secure and user-friendly ways to handle user identity in financial applications. These patterns are designed with security best practices, accessibility, and compliance in mind.
+
+## Authentication Architecture
+
+Bank Kit UI's authentication patterns follow a modern composition-based architecture:
+
+1. **AuthProvider**: A context provider that manages authentication state
+2. **useAuth Hook**: A custom hook that provides authentication functionality
+3. **Auth Components**: UI components for authentication flows
+4. **Auth Utilities**: Utility functions for authentication operations
+
+## Getting Started
+
+To use authentication patterns in your application, first wrap your application with the `AuthProvider`:
+
+```tsx
+import { AuthProvider } from "@bank-kit/ui/patterns/authentication";
+
+export default function App({ children }) {
+  return (
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  );
+}
+```
+
+Then, use the `useAuth` hook to access authentication functionality:
+
+```tsx
+import { useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function ProtectedPage() {
+  const { isAuthenticated, user, login, logout } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <div>Please log in to access this page.</div>;
+  }
+  
+  return (
+    <div>
+      <h1>Welcome, {user.name}!</h1>
+      <button onClick={logout}>Logout</button>
+    </div>
+  );
+}
+```
+
+## Available Patterns
+
+### Login Form
+
+The Login Form pattern provides a secure and accessible way for users to authenticate with your application.
+
+```tsx
+import { LoginForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function LoginPage() {
+  const { login } = useAuth();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <LoginForm onSubmit={login} />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Email/username and password authentication
+- Remember me functionality
+- Forgot password link
+- Error handling and validation
+- Loading states
+- Accessibility support
+- Security features (CSRF protection, rate limiting)
+
+#### Customization
+
+```tsx
+import { LoginForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function CustomLoginPage() {
+  const { login } = useAuth();
+  
+  return (
+    <LoginForm 
+      onSubmit={login}
+      logo={<CustomLogo />}
+      footer={<CustomFooter />}
+      theme="dark"
+      redirectUrl="/dashboard"
+      showRememberMe={true}
+      showForgotPassword={true}
+      showSignUp={true}
+    />
+  );
+}
+```
+
+### Registration Form
+
+The Registration Form pattern allows new users to create accounts with your application.
+
+```tsx
+import { RegistrationForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function RegistrationPage() {
+  const { register } = useAuth();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <RegistrationForm onSubmit={register} />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Multi-step registration process
+- Email verification
+- Password strength requirements
+- Terms and conditions acceptance
+- Identity verification options
+- Error handling and validation
+- Loading states
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { RegistrationForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function CustomRegistrationPage() {
+  const { register } = useAuth();
+  
+  return (
+    <RegistrationForm 
+      onSubmit={register}
+      logo={<CustomLogo />}
+      footer={<CustomFooter />}
+      theme="dark"
+      redirectUrl="/dashboard"
+      requireEmailVerification={true}
+      requirePhoneVerification={true}
+      requireIdentityVerification={true}
+    />
+  );
+}
+```
+
+### Password Reset
+
+The Password Reset pattern provides a secure way for users to reset their forgotten passwords.
+
+```tsx
+import { PasswordResetForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function PasswordResetPage() {
+  const { resetPassword } = useAuth();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <PasswordResetForm onSubmit={resetPassword} />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Email-based password reset
+- Token-based verification
+- Password strength requirements
+- Confirmation step
+- Error handling and validation
+- Loading states
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { PasswordResetForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function CustomPasswordResetPage() {
+  const { resetPassword } = useAuth();
+  
+  return (
+    <PasswordResetForm 
+      onSubmit={resetPassword}
+      logo={<CustomLogo />}
+      footer={<CustomFooter />}
+      theme="dark"
+      redirectUrl="/login"
+      tokenExpirationMinutes={30}
+      requireCurrentPassword={false}
+    />
+  );
+}
+```
+
+### Two-Factor Authentication
+
+The Two-Factor Authentication pattern adds an extra layer of security to your application.
+
+```tsx
+import { TwoFactorAuthForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function TwoFactorAuthPage() {
+  const { verifyTwoFactor } = useAuth();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <TwoFactorAuthForm onSubmit={verifyTwoFactor} />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- TOTP (Time-based One-Time Password) support
+- SMS/Email code verification
+- Backup codes
+- QR code for authenticator apps
+- Error handling and validation
+- Loading states
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { TwoFactorAuthForm, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function CustomTwoFactorAuthPage() {
+  const { verifyTwoFactor } = useAuth();
+  
+  return (
+    <TwoFactorAuthForm 
+      onSubmit={verifyTwoFactor}
+      logo={<CustomLogo />}
+      footer={<CustomFooter />}
+      theme="dark"
+      redirectUrl="/dashboard"
+      methods={["totp", "sms", "email"]}
+      requireBackupCodes={true}
+    />
+  );
+}
+```
+
+### Session Management
+
+The Session Management pattern provides tools for managing user sessions in your application.
+
+```tsx
+import { SessionManager, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function SessionManagerPage() {
+  const { session, extendSession, logout } = useAuth();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <SessionManager 
+        session={session}
+        onExtend={extendSession}
+        onLogout={logout}
+      />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Session timeout handling
+- Concurrent session management
+- Session activity monitoring
+- Forced logout
+- Session extension
+- Error handling and validation
+- Loading states
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { SessionManager, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+export default function CustomSessionManagerPage() {
+  const { session, extendSession, logout } = useAuth();
+  
+  return (
+    <SessionManager 
+      session={session}
+      onExtend={extendSession}
+      onLogout={logout}
+      sessionTimeoutMinutes={30}
+      allowConcurrentSessions={false}
+      showActivityMonitor={true}
+    />
+  );
+}
+```
+
+## Advanced Usage
+
+### Custom Authentication Provider
+
+You can create a custom authentication provider by extending the base `AuthProvider`:
+
+```tsx
+import { AuthProvider, useAuth } from "@bank-kit/ui/patterns/authentication";
+
+// Custom authentication provider
+function CustomAuthProvider({ children }) {
+  // Custom authentication logic
+  const auth = {
+    isAuthenticated: false,
+    user: null,
+    login: async (credentials) => {
+      // Custom login logic
+      console.log("Login", credentials);
+    },
+    register: async (data) => {
+      // Custom registration logic
+      console.log("Register", data);
+    },
+    logout: async () => {
+      // Custom logout logic
+      console.log("Logout");
+    },
+    // Other authentication methods
+  };
+  
+  return (
+    <AuthProvider value={auth}>
+      {children}
+    </AuthProvider>
+  );
+}
+
+// Use the custom authentication provider
+export default function App({ children }) {
+  return (
+    <CustomAuthProvider>
+      {children}
+    </CustomAuthProvider>
+  );
+}
+```
+
+### Protected Routes
+
+You can create protected routes using the `useAuth` hook:
+
+```tsx
+import { useAuth } from "@bank-kit/ui/patterns/authentication";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+export default function ProtectedRoute({ children }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isLoading, isAuthenticated, router]);
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    return null;
+  }
+  
+  return children;
+}
+
+// Use the protected route
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <div>
+        <h1>Dashboard</h1>
+        {/* Protected content */}
+      </div>
+    </ProtectedRoute>
+  );
+}
+```
+
+## Best Practices
+
+When implementing authentication patterns in your financial application, consider the following best practices:
+
+1. **Security First**: Always implement proper validation, sanitization, and error handling.
+2. **Accessibility**: Ensure all authentication patterns are accessible to users with disabilities.
+3. **Responsive Design**: Test authentication patterns across different device sizes and orientations.
+4. **Performance**: Monitor and optimize authentication pattern performance.
+5. **Compliance**: Ensure authentication patterns meet regulatory requirements for financial applications.
+6. **User Experience**: Design authentication flows that are intuitive and user-friendly.
+7. **Error Handling**: Provide clear and helpful error messages to users.
+8. **Logging**: Implement comprehensive logging for security events.
+
+## Next Steps
+
+- [Dashboard Patterns](/docs/patterns/dashboard)
+- [Form Patterns](/docs/patterns/form)
+- [Data Management Patterns](/docs/patterns/data-management)
+- [Communication Patterns](/docs/patterns/communication) 

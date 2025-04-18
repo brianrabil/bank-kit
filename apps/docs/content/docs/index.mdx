@@ -1,0 +1,166 @@
+---
+title: Welcome to Bank Kit
+description: Enterprise-grade UI component library for financial applications
+---
+
+import { Callout } from 'nextra/components'
+
+<Callout type="info">
+  Bank Kit UI is a comprehensive component library built on top of Shadcn UI, designed specifically for enterprise financial applications.
+</Callout>
+
+# Welcome to Bank Kit UI
+
+Bank Kit UI is a comprehensive component library built on top of Shadcn UI, designed specifically for enterprise financial applications. It provides a consistent, accessible, and customizable design system that can be used across the Bank Kit ecosystem.
+
+## Why Bank Kit UI?
+
+Bank Kit UI accelerates the development of financial applications by providing:
+
+- **Enterprise-Grade Components**: Pre-built, production-ready components for financial workflows
+- **Compliance-Ready**: Built with regulatory compliance considerations for financial services
+- **Security-Focused**: Components designed with security best practices for financial applications
+- **Accessibility Compliance**: Built on Radix UI primitives with full ARIA support and WCAG 2.1 compliance
+- **Type Safety**: Comprehensive TypeScript support with strict type checking
+- **Performance Optimization**: Efficient rendering and optimized bundle size for production environments
+- **Customization Framework**: Themeable components with variant support for brand consistency
+- **Responsive Architecture**: Mobile-first approach with responsive design patterns for all devices
+- **Theme Support**: Built-in light and dark mode support with customizable theming
+- **Modular Architecture**: Import only what you need to minimize bundle size
+
+## Quick Start
+
+You can get started with Bank Kit UI in just a few steps:
+
+1. **Install** the `@bank-kit/ui` package:
+
+   ```bash
+   # Using bun
+   bun add @bank-kit/ui
+
+   # Using npm
+   npm install @bank-kit/ui
+
+   # Using yarn
+   yarn add @bank-kit/ui
+
+   # Using pnpm
+   pnpm add @bank-kit/ui
+   ```
+
+2. **Import the global styles**:
+
+   ```typescript
+   // app/globals.css
+   import "@bank-kit/ui/globals.css";
+   ```
+
+3. **Use the Shadcn Registry**:
+
+   Bank Kit UI uses the Shadcn registry for component management. No manual Tailwind CSS configuration is required as the library handles all styling internally.
+
+4. **Implement components**:
+
+   ```tsx
+   import { Button } from "@bank-kit/ui/components/button";
+   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@bank-kit/ui/components/card";
+
+   export default function AccountSummary() {
+     return (
+       <Card>
+         <CardHeader>
+           <CardTitle>Account Balance</CardTitle>
+           <CardDescription>Your current account balance</CardDescription>
+         </CardHeader>
+         <CardContent>
+           <p className="text-3xl font-bold">$1,234.56</p>
+         </CardContent>
+         <CardFooter>
+           <Button>View Details</Button>
+         </CardFooter>
+       </Card>
+     );
+   }
+   ```
+
+## Core Features
+
+### Comprehensive Component Library
+
+Bank Kit UI provides a comprehensive suite of components, patterns, hooks, and utilities designed for enterprise financial applications:
+
+- **Layout Components**: Responsive containers, grids, stacks, and more
+- **Navigation Components**: Menus, breadcrumbs, tabs, and pagination
+- **Form Components**: Inputs, selects, checkboxes, and more
+- **Forms**: Form builder, templates, validation, and submission handling
+- **Feedback Components**: Alerts, toasts, progress indicators, and more
+- **Data Display Components**: Tables, cards, avatars, and charts
+- **Overlay Components**: Dialogs, popovers, context menus, and more
+- **Animation Components**: Fade, slide, scale, and more animations
+- **AI Components**: Chat interfaces, assistants, suggestions, and more
+- **Financial Components**: Currency inputs, transaction lists, and more
+
+### Advanced Patterns
+
+Bank Kit UI includes pre-built patterns for common financial workflows:
+
+- **Authentication Patterns**: Login, registration, password reset, and 2FA
+- **Dashboard Patterns**: Analytics, admin, user, and financial overview dashboards
+- **Form Patterns**: Multi-step forms, dynamic forms, and form wizards
+- **Data Management Patterns**: CRUD interfaces, data import/export, and bulk actions
+- **Communication Patterns**: Chat interfaces, notification centers, and support tickets
+
+### Custom Hooks
+
+Bank Kit UI provides a variety of custom hooks for common financial application needs:
+
+- **State Management Hooks**: Local storage, session storage, debounce, and throttle
+- **Form Hooks**: Form state management, field arrays, and validation
+- **UI Hooks**: Media queries, intersection observer, and element tracking
+- **Data Hooks**: Fetching, querying, mutations, and WebSocket connections
+- **Financial Hooks**: Currency formatting, financial calculations, and transaction history
+
+### Utility Functions
+
+Bank Kit UI includes a variety of utility functions for common financial application tasks:
+
+- **Formatting Utilities**: Currency, date, number, and more formatting
+- **Validation Utilities**: Email, password, credit card, and more validation
+- **Zod Utilities**: Pre-defined schemas, resolvers, transformers, and more
+- **Financial Utilities**: Interest, loan payment, investment return, and more calculations
+- **Security Utilities**: Encryption, decryption, password hashing, and more
+- **Testing Utilities**: Mock data generators, component testing, and more
+
+## Enterprise Features
+
+### Security
+- Components designed with security best practices
+- Input validation and sanitization
+- Protection against common web vulnerabilities
+
+### Compliance
+- WCAG 2.1 AA compliance
+- Accessibility features for financial applications
+- Support for regulatory requirements
+
+### Performance
+- Optimized for production environments
+- Minimal bundle size impact
+- Efficient rendering for complex financial data
+
+### Support
+- Enterprise support options available
+- Regular security updates
+- Dedicated technical assistance
+
+## Getting Started
+
+Check out our [Getting Started Guide](/docs/getting-started) to learn how to use Bank Kit UI in your project.
+
+## Contributing
+
+We welcome contributions to Bank Kit UI. Please see our [Contributing Guide](https://github.com/bank-kit/ui/blob/main/CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
+
+## License
+
+Bank Kit UI is licensed under the MIT License. See the [LICENSE](https://github.com/bank-kit/ui/blob/main/LICENSE) file for details. Enterprise licensing options are available for organizations requiring additional features and support.

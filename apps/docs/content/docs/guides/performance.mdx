@@ -1,0 +1,413 @@
+---
+title: "Performance Optimization Guide"
+description: "Learn how to optimize your Next.js application for maximum performance"
+---
+
+import { CodeBlock } from "@bank-kit/ui/components/code-block";
+
+# Performance Optimization Guide
+
+This guide covers comprehensive performance optimization strategies for Next.js applications, focusing on modern best practices and techniques to achieve optimal performance.
+
+## Table of Contents
+
+- [Core Web Vitals](#core-web-vitals)
+- [Server Components](#server-components)
+- [Client Components](#client-components)
+- [Data Fetching](#data-fetching)
+- [Image Optimization](#image-optimization)
+- [Bundle Optimization](#bundle-optimization)
+- [Caching Strategies](#caching-strategies)
+- [State Management](#state-management)
+- [Monitoring and Analytics](#monitoring-and-analytics)
+
+## Core Web Vitals
+
+Core Web Vitals are essential metrics that measure real-world user experience. Optimize these metrics for better performance:
+
+### Largest Contentful Paint (LCP)
+- Use Server Components for initial page load
+- Implement proper image optimization
+- Minimize render-blocking resources
+- Use streaming and Suspense boundaries
+
+<CodeBlock language="tsx" code={`// Example of streaming with Suspense
+import { Suspense } from "react";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+export default function Page() {
+  return (
+    <div>
+      <h1>Your Dashboard</h1>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <DashboardContent />
+      </Suspense>
+    </div>
+  );
+}`} />
+
+### First Input Delay (FID)
+- Minimize JavaScript execution time
+- Use code splitting and lazy loading
+- Implement proper event delegation
+- Avoid long tasks in the main thread
+
+<CodeBlock language="tsx" code={`// Example of code splitting
+import dynamic from "next/dynamic";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+// Define the component type for better type safety
+interface HeavyComponentProps {
+  data: any; // Replace with proper type
+}
+
+// Use dynamic import with proper typing
+const HeavyComponent = dynamic<HeavyComponentProps>(() => 
+  import("@/components/HeavyComponent").then(mod => mod.HeavyComponent), {
+  loading: () => <LoadingSkeleton />,
+  ssr: false // Disable SSR for client-only components
+});`} />
+
+### Cumulative Layout Shift (CLS)
+- Set proper image dimensions
+- Use CSS containment
+- Implement proper loading states
+- Avoid dynamic content insertion
+
+<CodeBlock language="tsx" code={`// Example of proper image handling
+import Image from "next/image";
+
+export function OptimizedImage() {
+  return (
+    <Image
+      src="/image.jpg"
+      alt="Description"
+      width={800}
+      height={600}
+      placeholder="blur"
+      blurDataURL="data:image/jpeg;base64,..."
+      priority={true} // For LCP images
+    />
+  );
+}`} />
+
+## Server Components
+
+Server Components are a powerful feature in Next.js that can significantly improve performance:
+
+### Benefits
+- Reduced client-side JavaScript
+- Improved initial page load
+- Better SEO
+- Reduced bundle size
+
+### Best Practices
+- Use Server Components by default
+- Only use Client Components when necessary
+- Implement proper streaming boundaries
+- Use proper data fetching patterns
+
+<CodeBlock language="tsx" code={`// Example of a Server Component
+import { fetchData } from "@/lib/api";
+import { ServerComponent } from "@/components/ServerComponent";
+
+export default async function Page() {
+  const data = await fetchData();
+  
+  return (
+    <div>
+      <h1>Server Rendered Content</h1>
+      <ServerComponent data={data} />
+    </div>
+  );
+}`} />
+
+## Client Components
+
+Client Components should be used sparingly and optimized for performance:
+
+### When to Use
+- Interactive UI elements
+- Browser APIs
+- Event listeners
+- Client-side state
+
+### Optimization Techniques
+- Use proper code splitting
+- Implement proper loading states
+- Minimize re-renders
+- Use proper memoization
+
+<CodeBlock language="tsx" code={`// Example of an optimized Client Component
+"use client";
+
+import { memo, useCallback } from "react";
+
+interface OptimizedComponentProps {
+  data: any; // Replace with proper type
+}
+
+export const OptimizedComponent = memo(function OptimizedComponent({ data }: OptimizedComponentProps) {
+  const handleClick = useCallback(() => {
+    // Handle click
+  }, []);
+
+  return (
+    <div onClick={handleClick}>
+      {/* Component content */}
+    </div>
+  );
+});`} />
+
+## Data Fetching
+
+Optimize data fetching for better performance:
+
+### Server-Side Data Fetching
+- Use proper caching strategies
+- Implement parallel data fetching
+- Use proper error boundaries
+- Implement proper loading states
+
+<CodeBlock language="tsx" code={`// Example of optimized data fetching
+import { Suspense } from "react";
+import { fetchData1, fetchData2 } from "@/lib/api";
+import { DataDisplay } from "@/components/DataDisplay";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+
+export default async function Page() {
+  const [data1, data2] = await Promise.all([
+    fetchData1(),
+    fetchData2()
+  ]);
+
+  return (
+    <div>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <DataDisplay data={data1} />
+      </Suspense>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <DataDisplay data={data2} />
+      </Suspense>
+    </div>
+  );
+}`} />
+
+### Client-Side Data Fetching
+- Use proper caching
+- Implement optimistic updates
+- Use proper error handling
+- Implement proper loading states
+
+<CodeBlock language="tsx" code={`// Example of optimized client-side data fetching
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "@/lib/api";
+import { DataDisplay } from "@/components/DataDisplay";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { ErrorMessage } from "@/components/ErrorMessage";
+
+export function DataComponent() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["data"],
+    queryFn: fetchData,
+    staleTime: 60 * 1000, // 1 minute
+    cacheTime: 5 * 60 * 1000 // 5 minutes
+  });
+
+  if (isLoading) return <LoadingSkeleton />;
+  if (error) return <ErrorMessage error={error} />;
+
+  return <DataDisplay data={data} />;
+}`} />
+
+## Image Optimization
+
+Optimize images for better performance:
+
+### Best Practices
+- Use Next.js Image component
+- Implement proper sizing
+- Use modern image formats
+- Implement proper loading strategies
+
+<CodeBlock language="tsx" code={`// Example of optimized image handling
+import Image from "next/image";
+
+export function OptimizedImages() {
+  return (
+    <div>
+      <Image
+        src="/hero.jpg"
+        alt="Hero"
+        width={1200}
+        height={600}
+        priority
+        quality={75}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,..."
+      />
+      <Image
+        src="/thumbnail.jpg"
+        alt="Thumbnail"
+        width={400}
+        height={300}
+        loading="lazy"
+        sizes="(max-width: 768px) 100vw, 400px"
+      />
+    </div>
+  );
+}`} />
+
+## Bundle Optimization
+
+Optimize JavaScript bundles for better performance:
+
+### Techniques
+- Use proper code splitting
+- Implement tree shaking
+- Minimize dependencies
+- Use proper module imports
+
+<CodeBlock language="tsx" code={`// Example of bundle optimization
+import dynamic from "next/dynamic";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+// Define the component type for better type safety
+interface HeavyComponentProps {
+  data: any; // Replace with proper type
+}
+
+// Lazy load heavy components with proper typing
+const HeavyComponent = dynamic<HeavyComponentProps>(() => 
+  import("@/components/HeavyComponent").then(mod => mod.HeavyComponent), {
+  loading: () => <LoadingSkeleton />,
+  ssr: false
+});`} />
+
+## Caching Strategies
+
+Implement proper caching strategies:
+
+### Server-Side Caching
+- Use proper cache headers
+- Implement ISR
+- Use proper revalidation
+- Implement proper cache keys
+
+<CodeBlock language="tsx" code={`// Example of server-side caching
+import { DataDisplay } from "@/components/DataDisplay";
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  const data = await fetch("https://api.example.com/data", {
+    next: {
+      revalidate: 60
+    }
+  }).then(res => res.json());
+
+  return <DataDisplay data={data} />;
+}`} />
+
+### Client-Side Caching
+- Use proper cache strategies
+- Implement proper cache invalidation
+- Use proper cache keys
+- Implement proper cache persistence
+
+<CodeBlock language="tsx" code={`// Example of client-side caching
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "@/lib/api";
+import { DataDisplay } from "@/components/DataDisplay";
+
+export function CachedComponent() {
+  const { data } = useQuery({
+    queryKey: ["data"],
+    queryFn: fetchData,
+    staleTime: 60 * 1000,
+    cacheTime: 5 * 60 * 1000
+  });
+
+  return <DataDisplay data={data} />;
+}`} />
+
+## State Management
+
+Optimize state management for better performance:
+
+### Best Practices
+- Use proper state management
+- Implement proper state updates
+- Use proper state persistence
+- Implement proper state synchronization
+
+<CodeBlock language="tsx" code={`// Example of optimized state management
+"use client";
+
+import { useCallback, useState } from "react";
+import { StateDisplay } from "@/components/StateDisplay";
+
+interface State {
+  // Define your state properties
+  count: number;
+  text: string;
+}
+
+const initialState: State = {
+  count: 0,
+  text: ""
+};
+
+export function StateComponent() {
+  const [state, setState] = useState<State>(initialState);
+
+  const updateState = useCallback((newState: Partial<State>) => {
+    setState(prev => ({
+      ...prev,
+      ...newState
+    }));
+  }, []);
+
+  return <StateDisplay state={state} onUpdate={updateState} />;
+}`} />
+
+## Monitoring and Analytics
+
+Implement proper monitoring and analytics:
+
+### Tools
+- Use proper monitoring tools
+- Implement proper analytics
+- Use proper error tracking
+- Implement proper performance monitoring
+
+<CodeBlock language="tsx" code={`// Example of performance monitoring
+export function reportWebVitals(metric: any) {
+  if (metric.label === "web-vital") {
+    console.log(metric); // Send to analytics
+  }
+}`} />
+
+## Best Practices
+
+1. **Use Server Components by Default**: Start with Server Components and only use Client Components when necessary.
+2. **Implement Proper Loading States**: Use Suspense and loading skeletons for better UX.
+3. **Optimize Images**: Use Next.js Image component with proper sizing and formats.
+4. **Implement Proper Caching**: Use appropriate caching strategies for both server and client.
+5. **Minimize JavaScript**: Reduce bundle size and implement proper code splitting.
+6. **Monitor Performance**: Track Core Web Vitals and implement proper analytics.
+7. **Optimize Data Fetching**: Use proper data fetching patterns and caching.
+8. **Implement Proper Error Handling**: Use error boundaries and proper error states.
+
+## Next Steps
+
+- [Authentication Guide](/docs/guides/authentication)
+- [Form Handling Guide](/docs/guides/form-handling)
+- [State Management Guide](/docs/guides/state-management)
+- [Data Fetching Guide](/docs/guides/data-fetching) 

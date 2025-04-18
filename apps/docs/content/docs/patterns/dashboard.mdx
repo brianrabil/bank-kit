@@ -1,0 +1,472 @@
+---
+title: Dashboard Patterns
+description: Structured layouts for displaying financial information and analytics
+---
+
+# Dashboard Patterns
+
+Dashboard patterns in Bank Kit UI offer structured layouts for displaying financial information, analytics, and user-specific data. These patterns are designed to be customizable, accessible, and compliant with financial industry standards.
+
+## Dashboard Architecture
+
+Bank Kit UI's dashboard patterns follow a modern composition-based architecture:
+
+1. **DashboardProvider**: A context provider that manages dashboard state and data
+2. **useDashboard Hook**: A custom hook that provides dashboard functionality
+3. **Dashboard Components**: UI components for dashboard layouts
+4. **Dashboard Utilities**: Utility functions for dashboard operations
+
+## Getting Started
+
+To use dashboard patterns in your application, first wrap your dashboard with the `DashboardProvider`:
+
+```tsx
+import { DashboardProvider } from "@bank-kit/ui/patterns/dashboard";
+
+export default function DashboardPage() {
+  return (
+    <DashboardProvider>
+      <DashboardContent />
+    </DashboardProvider>
+  );
+}
+```
+
+Then, use the `useDashboard` hook to access dashboard functionality:
+
+```tsx
+import { useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+function DashboardContent() {
+  const { data, isLoading, error, refresh } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      {/* Dashboard content */}
+      <button onClick={refresh}>Refresh</button>
+    </div>
+  );
+}
+```
+
+## Available Patterns
+
+### Analytics Dashboard
+
+The Analytics Dashboard pattern provides a comprehensive view of financial data and metrics.
+
+```tsx
+import { AnalyticsDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function AnalyticsPage() {
+  const { data, isLoading, error, refresh } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="container mx-auto py-8">
+      <AnalyticsDashboard data={data} onRefresh={refresh} />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Key performance indicators (KPIs)
+- Charts and graphs
+- Data tables
+- Filters and date ranges
+- Export functionality
+- Real-time updates
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { AnalyticsDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomAnalyticsPage() {
+  const { data, isLoading, error, refresh, updateFilters, exportData } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <AnalyticsDashboard 
+      data={data}
+      onRefresh={refresh}
+      onFilterChange={updateFilters}
+      onExport={exportData}
+      refreshInterval={300000} // 5 minutes
+      showRealTimeUpdates={true}
+      defaultDateRange="last30days"
+      allowedExportFormats={["csv", "pdf", "excel"]}
+    />
+  );
+}
+```
+
+### Admin Dashboard
+
+The Admin Dashboard pattern provides tools for managing users, settings, and system configuration.
+
+```tsx
+import { AdminDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function AdminPage() {
+  const { data, isLoading, error, refresh, performAction } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="container mx-auto py-8">
+      <AdminDashboard 
+        data={data} 
+        onRefresh={refresh} 
+        onAction={performAction} 
+      />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- User management
+- Role and permission management
+- System settings
+- Audit logs
+- Activity monitoring
+- Configuration management
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { AdminDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomAdminPage() {
+  const { data, isLoading, error, refresh, performAction, updateSettings } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <AdminDashboard 
+      data={data}
+      onRefresh={refresh}
+      onAction={performAction}
+      onSettingChange={updateSettings}
+      showAuditLogs={true}
+      showActivityMonitor={true}
+      allowedUserActions={["create", "edit", "delete", "suspend"]}
+      refreshInterval={60000} // 1 minute
+    />
+  );
+}
+```
+
+### User Dashboard
+
+The User Dashboard pattern provides a personalized view of user-specific information and actions.
+
+```tsx
+import { UserDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function UserPage() {
+  const { data, isLoading, error, refresh, performAction } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="container mx-auto py-8">
+      <UserDashboard 
+        data={data} 
+        onRefresh={refresh} 
+        onAction={performAction} 
+      />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Account overview
+- Recent activity
+- Quick actions
+- Notifications
+- Preferences
+- Security settings
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { UserDashboard, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomUserPage() {
+  const { data, isLoading, error, refresh, performAction, updatePreferences } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <UserDashboard 
+      data={data}
+      onRefresh={refresh}
+      onAction={performAction}
+      onPreferenceChange={updatePreferences}
+      showNotifications={true}
+      showSecuritySettings={true}
+      showRecentActivity={true}
+      refreshInterval={300000} // 5 minutes
+    />
+  );
+}
+```
+
+### Financial Overview
+
+The Financial Overview pattern provides a comprehensive view of financial accounts, transactions, and metrics.
+
+```tsx
+import { FinancialOverview, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function FinancialPage() {
+  const { data, isLoading, error, refresh, performAction } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="container mx-auto py-8">
+      <FinancialOverview 
+        data={data} 
+        onRefresh={refresh} 
+        onAction={performAction} 
+      />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Account balances
+- Transaction history
+- Income and expenses
+- Budget tracking
+- Financial goals
+- Investment performance
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { FinancialOverview, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomFinancialPage() {
+  const { data, isLoading, error, refresh, performAction } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <FinancialOverview 
+      data={data}
+      onRefresh={refresh}
+      onAction={performAction}
+      showBudgetTracking={true}
+      showFinancialGoals={true}
+      showInvestmentPerformance={true}
+      refreshInterval={300000} // 5 minutes
+    />
+  );
+}
+```
+
+### Activity Feed
+
+The Activity Feed pattern displays a chronological list of user activities and system events.
+
+```tsx
+import { ActivityFeed, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function ActivityPage() {
+  const { data, isLoading, error, refresh, performAction, updateFilters } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="container mx-auto py-8">
+      <ActivityFeed 
+        data={data} 
+        onRefresh={refresh} 
+        onAction={performAction}
+        onFilterChange={updateFilters}
+      />
+    </div>
+  );
+}
+```
+
+#### Features
+
+- Chronological activity list
+- Activity filtering
+- Activity search
+- Activity details
+- Activity actions
+- Real-time updates
+- Responsive layout
+- Accessibility support
+
+#### Customization
+
+```tsx
+import { ActivityFeed, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomActivityPage() {
+  const { data, isLoading, error, refresh, performAction, updateFilters, updateSort } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <ActivityFeed 
+      data={data}
+      onRefresh={refresh}
+      onAction={performAction}
+      onFilterChange={updateFilters}
+      onSortChange={updateSort}
+      showRealTimeUpdates={true}
+      showActivityDetails={true}
+      showActivityActions={true}
+      refreshInterval={60000} // 1 minute
+    />
+  );
+}
+```
+
+## Advanced Usage
+
+### Custom Dashboard Provider
+
+You can create a custom dashboard provider by extending the base `DashboardProvider`:
+
+```tsx
+import { DashboardProvider, useDashboard } from "@bank-kit/ui/patterns/dashboard";
+
+// Custom dashboard provider
+function CustomDashboardProvider({ children }) {
+  // Custom dashboard logic
+  const dashboard = {
+    data: null,
+    isLoading: false,
+    error: null,
+    refresh: async () => {
+      // Custom refresh logic
+      console.log("Refresh");
+    },
+    performAction: async (action, id) => {
+      // Custom action logic
+      console.log(action, id);
+    },
+    // Other dashboard methods
+  };
+  
+  return (
+    <DashboardProvider value={dashboard}>
+      {children}
+    </DashboardProvider>
+  );
+}
+
+// Use the custom dashboard provider
+export default function DashboardPage() {
+  return (
+    <CustomDashboardProvider>
+      <DashboardContent />
+    </CustomDashboardProvider>
+  );
+}
+```
+
+### Dashboard Layouts
+
+You can create custom dashboard layouts using the dashboard components:
+
+```tsx
+import { 
+  DashboardProvider, 
+  useDashboard,
+  DashboardHeader,
+  DashboardSidebar,
+  DashboardContent,
+  DashboardFooter
+} from "@bank-kit/ui/patterns/dashboard";
+
+export default function CustomDashboardPage() {
+  return (
+    <DashboardProvider>
+      <div className="flex h-screen">
+        <DashboardSidebar />
+        <div className="flex flex-col flex-1">
+          <DashboardHeader />
+          <DashboardContent />
+          <DashboardFooter />
+        </div>
+      </div>
+    </DashboardProvider>
+  );
+}
+
+function DashboardContent() {
+  const { data, isLoading, error, refresh } = useDashboard();
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div className="p-6">
+      <h1>Dashboard</h1>
+      {/* Dashboard content */}
+      <button onClick={refresh}>Refresh</button>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+When implementing dashboard patterns in your financial application, consider the following best practices:
+
+1. **Data Visualization**: Use appropriate charts and graphs to represent financial data.
+2. **Accessibility**: Ensure all dashboard patterns are accessible to users with disabilities.
+3. **Responsive Design**: Test dashboard patterns across different device sizes and orientations.
+4. **Performance**: Monitor and optimize dashboard pattern performance, especially for data-intensive operations.
+5. **Compliance**: Ensure dashboard patterns meet regulatory requirements for financial applications.
+6. **User Experience**: Design dashboard layouts that are intuitive and user-friendly.
+7. **Data Refresh**: Implement appropriate refresh intervals for real-time data.
+8. **Error Handling**: Provide clear and helpful error messages to users.
+
+## Next Steps
+
+- [Authentication Patterns](/docs/patterns/authentication)
+- [Form Patterns](/docs/patterns/form)
+- [Data Management Patterns](/docs/patterns/data-management)
+- [Communication Patterns](/docs/patterns/communication) 

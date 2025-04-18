@@ -1,1 +1,5 @@
-export { default } from "@bank-kit/ui/postcss.config";
+export default {
+	plugins: {
+		"@tailwindcss/postcss": {},
+	},
+};

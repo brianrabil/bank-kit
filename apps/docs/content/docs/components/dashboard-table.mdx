@@ -1,0 +1,111 @@
+---
+title: Dashboard Table
+description: A generic, draggable and sortable table component built with TanStack Table and DnD Kit.
+sidebar:
+  label: Dashboard Table
+  order: 30
+---
+
+import { DashboardTable } from '@bank-kit/ui/components/dashboard-table';
+import { ComponentPreview, PropsTable } from '@bank-kit/ui/components/docs-components';
+import { Separator } from '@bank-kit/ui/components/ui/separator';
+
+export const sampleColumns = [
+  {
+    header: 'ID',
+    accessorKey: 'id',
+  },
+  {
+    header: 'Name',
+    accessorKey: 'name',
+  },
+  {
+    header: 'Value',
+    accessorKey: 'value',
+  },
+];
+
+export const sampleData = [
+  { id: '1', name: 'Alpha', value: 100 },
+  { id: '2', name: 'Bravo', value: 200 },
+  { id: '3', name: 'Charlie', value: 300 },
+];
+
+export const dashboardTableProps = [
+  {
+    name: 'data',
+    type: 'T[]',
+    required: true,
+    description: 'Array of row objects, each with a unique `id`.',
+  },
+  {
+    name: 'columns',
+    type: 'ColumnDef<T>[]',
+    required: true,
+    description: 'Column definitions for rendering headers and cells.',
+  },
+  {
+    name: 'initialPageSize',
+    type: 'number',
+    defaultValue: '10',
+    description: 'Initial number of rows per page.',
+  },
+  {
+    name: 'pageSizeOptions',
+    type: 'number[]',
+    defaultValue: '[10, 20, 50]',
+    description: 'Selectable page size options.',
+  },
+  {
+    name: 'onReorder',
+    type: '(data: T[]) => void',
+    description: 'Callback invoked with the reordered data after drag-and-drop.',
+  },
+];
+
+## Overview
+
+The **DashboardTable** component provides a fully-featured, draggable and sortable table for dashboard views.  
+It leverages TanStack Table for data management and `@dnd-kit` for drag-and-drop row reordering.
+
+## Installation
+
+```bash
+npm install @bank-kit/ui
+```
+
+```tsx
+import { DashboardTable } from '@bank-kit/ui/components/dashboard-table';
+```
+
+## Usage
+
+<ComponentPreview
+  title="Basic DashboardTable"
+  description="Render a dashboard table with sortable rows."
+  code={`
+<DashboardTable
+  data={sampleData}
+  columns={sampleColumns}
+  onReorder={(newData) => console.log('Reordered', newData)}
+/>
+  `}
+/>
+
+## Props
+
+<PropsTable props={dashboardTableProps} />
+
+## Sample Data & Columns
+
+<ComponentPreview
+  title="Sample Data & Columns"
+  code={JSON.stringify({ sampleColumns, sampleData }, null, 2)}
+  language="json"
+/>
+
+## Best Practices
+
+- Ensure each row object has a unique `id` for drag-and-drop to work.  
+- Define concise column definitions for optimal performance.  
+- Use `onReorder` to persist new row order to your application state or backend.
