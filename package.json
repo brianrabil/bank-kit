@@ -7,19 +7,14 @@
 		"dev": "turbo run dev",
 		"build": "turbo run build",
 		"start": "turbo run start",
-		"lint": "biome check --write .",
-		"registry:build": "shadcn build"
+		"lint": "biome check --write ."
 	},
 	"devDependencies": {
 		"@bank-kit/typescript-config": "workspace:*",
 		"@biomejs/biome": "1.9.4",
-		"@types/node": "^20",
 		"turbo": "^2.5.0",
 		"typescript": "^5"
 	},
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
+	"workspaces": ["apps/*", "packages/*"],
 	"packageManager": "bun@1.2.5"
 }
