@@ -1,0 +1,21 @@
+{
+	"name": "@bank-kit/server",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun --watch run app/main.ts",
+		"prepare": "bun run scripts/prepare.ts",
+		"build": "bun build --compile --minify --sourcemap src/server.ts ./public/**/*.json --outfile dist/server",
+		"deploy": "docker build -f ./Dockerfile ../.."
+	},
+	"dependencies": {
+		"@bank-kit/registry": "workspace:*",
+		"@bank-kit/utils": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}

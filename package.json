@@ -1,18 +1,20 @@
 {
-	"name": "bank-kit",
+	"name": "@bank-kit/root",
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "turbo run build",
-		"start": "turbo run start",
-		"lint": "biome check --write ."
+		"lint": "turbo run lint",
+		"lint:fix": "turbo run lint:fix",
+		"biome:check": "biome check .",
+		"biome:check:write": "biome check --write ."
 	},
 	"devDependencies": {
 		"@bank-kit/typescript-config": "workspace:*",
 		"@biomejs/biome": "1.9.4",
-		"turbo": "^2.5.0",
+		"turbo": "^2.5.3",
 		"typescript": "^5"
 	},
 	"workspaces": ["apps/*", "packages/*"],

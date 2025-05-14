@@ -1,31 +1,32 @@
 {
-  "name": "@bank-kit/registry",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "registry:build": "shadcn build"
-  },
-  "dependencies": {
-    "@bank-kit/ui": "workspace:*",
-    "motion": "^12.11.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "shadcn": "^2.6.0-canary.2",
-    "zod": "^3.24.2"
-  },
-  "devDependencies": {
-    "@bank-kit/typescript-config": "workspace:*",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "typescript": "^5",
-    "@tailwindcss/postcss": "^4.0.14",
-    "postcss": "^8",
-    "tailwindcss": "^4.1.4",
-    "@types/bun": "latest"
-  },
-  "exports": {
-    "./*": ["./src/*.ts", "./src/*.tsx"],
-    "./registry.json": "./registry.json"
-  }
+	"name": "@bank-kit/registry",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"registry:build": "shadcn build"
+	},
+	"dependencies": {
+		"@bank-kit/ui": "workspace:*",
+		"motion": "^12.11.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"shadcn": "^2.6.0-canary.2",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@bank-kit/typescript-config": "workspace:*",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"typescript": "^5",
+		"@tailwindcss/postcss": "^4.0.14",
+		"postcss": "^8",
+		"tailwindcss": "^4.1.4",
+		"@types/bun": "latest"
+	},
+	"exports": {
+		"./*": ["./src/*.ts", "./src/*.tsx"],
+		"./registry.json": "./registry.json",
+		"./*.json": "./*.json"
+	}
 }
