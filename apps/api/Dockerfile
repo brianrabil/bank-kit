@@ -1,4 +1,4 @@
-FROM oven/bun:alpine AS base
+FROM oven/bun:1 AS base
 
 FROM base AS builder
 RUN apk update
@@ -34,14 +34,13 @@ FROM base AS runner
 WORKDIR /app
 
 # Don't run production as root
-RUN addgroup --system --gid 1001 bun
-RUN adduser --system --uid 1001 bank-kit
-USER bank-kit
+USER bun
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=bank-kit:bun /app/apps/api/.next/standalone ./
-COPY --from=installer --chown=bank-kit:bun /app/apps/api/.next/static ./apps/web/.next/static
-COPY --from=installer --chown=bank-kit:bun /app/apps/api/public ./apps/web/public
+# COPY --from=installer --chown=bank-kit:bun /app/apps/api/dist ./
+COPY --from=installer --chown=bun /app/apps/api/dist ./apps/api/dist
+COPY --from=installer --chown=bun /app/apps/api/public ./apps/api/public
 
-CMD node apps/web/server.js
+EXPOSE 8080
+CMD ["apps/web/dist/server"]

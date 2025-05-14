@@ -3,17 +3,13 @@
 	"extends": ["//"],
 	"tags": ["internal"],
 	"tasks": {
-		"prepare": {
-			"dependsOn": ["@bank-kit/utils#build"],
-			"outputs": ["public/**"]
-		},
 		"generate:workspace": {
 			"cache": true,
 			"inputs": ["scripts/generate-workspace.ts"],
 			"outputs": ["generated/**"]
 		},
 		"build": {
-			"dependsOn": [],
+			"dependsOn": ["generate:workspace"],
 			"outputs": ["dist/**"]
 		}
 	}

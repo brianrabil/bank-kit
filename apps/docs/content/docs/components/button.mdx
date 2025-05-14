@@ -129,7 +129,7 @@ export const holdDeleteButtonProps = [
 
 ## Overview
 
-The **Button** is a fundamental UI element in bank‑kit.  
+The **Button** is a fundamental UI element in bank‑kit.
 It supports multiple **variants**, **sizes**, icon placement, and built‑in loading states.
 
 <div className="mt-6 flex flex-wrap gap-4">
@@ -259,11 +259,9 @@ import { Button } from '@bank-kit/ui';
     <ComponentPreview
       title="HoldDeleteButton"
       description="Safety mechanism for destructive actions."
-      code={`<HoldDeleteButton onDelete={() => alert('Deleted!')}>
-  Delete Record
-</HoldDeleteButton>`}
+      code={`<HoldDeleteButton>Delete Record</HoldDeleteButton>`}
     >
-      <Button onDelete={() => alert('Deleted!')}>
+      <Button>
         Delete Record
       </Button>
     </ComponentPreview>
@@ -296,9 +294,9 @@ import { Button } from '@bank-kit/ui';
 
 ## Accessibility
 
-- Uses semantic `<button>` elements.  
-- Keyboard‑navigable & focus‑visible.  
-- ARIA attributes applied during loading.  
+- Uses semantic `<button>` elements.
+- Keyboard‑navigable & focus‑visible.
+- ARIA attributes applied during loading.
 - Color contrast meets WCAG AA.
 
 <Callout className="mt-4">
@@ -361,4 +359,3 @@ export function GradientButton(props) {
   );
 }
 ```
- 

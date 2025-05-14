@@ -8,7 +8,7 @@
 			"title": "Pill",
 			"description": "A pill component",
 			"type": "registry:component",
-			"dependencies": ["lucide-react"],
+			"dependencies": ["lucide-react", "motion"],
 			"files": [
 				{
 					"path": "src/pill/pill.tsx",
@@ -21,7 +21,6 @@
 			"type": "registry:component",
 			"title": "Hello World",
 			"description": "A simple hello world component",
-			"registryDependencies": ["button"],
 			"files": [
 				{
 					"path": "src/hello-world/hello-world.tsx",

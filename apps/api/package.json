@@ -1,16 +1,15 @@
 {
-	"name": "@bank-kit/server",
+	"name": "@bank-kit/api",
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "bun --watch run app/main.ts",
+		"dev": "bun --watch run src/server.ts",
 		"prepare": "bun run scripts/prepare.ts",
 		"build": "bun build --compile --minify --sourcemap src/server.ts ./public/**/*.json --outfile dist/server",
 		"deploy": "docker build -f ./Dockerfile ../.."
 	},
 	"dependencies": {
-		"@bank-kit/registry": "workspace:*",
-		"@bank-kit/utils": "workspace:*"
+		"@bank-kit/registry": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/bun": "latest"

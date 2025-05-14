@@ -7,7 +7,7 @@
 			"outputs": ["public/**"]
 		},
 		"build": {
-			"dependsOn": ["prepare", "^build"],
+			"dependsOn": ["prepare"],
 			"outputs": ["dist/**"]
 		}
 	}

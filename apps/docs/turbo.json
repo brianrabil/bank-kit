@@ -1,0 +1,13 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"prepare": {
+			"cache": true,
+			"dependsOn": ["@bank-kit/registry#build"]
+		},
+		"build": {
+			"dependsOn": ["^build", "prepare"]
+		}
+	}
+}
