@@ -1,196 +1,247 @@
 #!/usr/bin/env bun
-
-import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
-import { readdir } from "node:fs/promises";
-import { join } from "node:path";
-
 /**
- * Finds the root directory of the Turborepo monorepo by locating turbo.json
- * or a package.json with a workspaces field.
+ * ---------------------------------------------------------------------------
+ * turbo-sdk.ts
+ * Typed helper utilities for working with Turborepo inside a Bun workspace.
+ *
+ * @packageDocumentation
+ * ---------------------------------------------------------------------------
  */
-export async function findMonorepoRoot(): Promise<string> {
-	let currentDir = process.cwd();
+
+import { existsSync, readdirSync } from "node:fs";
+import path from "node:path";
+import { $ } from "bun"; // bun's subprocess sugar
+import type { SpawnOptions } from "bun";
+
+////////////////////////////////////////////////////////////////////////////////
+// 🔑 Types
+////////////////////////////////////////////////////////////////////////////////
+
+export interface RunOptions {
+	/** Glob-compatible package filter (e.g. "docs", "web-*") */
+	filter?: string;
+	timeoutMs?: number;
+	ipc?: boolean; // forward IPC messages (Bun ↔ Bun) to stdout
+}
+
+export interface RunResult {
+	success: boolean;
+	tasks: unknown[]; // ↯ shape depends on --output-logs=json from Turborepo
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 🏭 Helpers
+////////////////////////////////////////////////////////////////////////////////
+
+/** Ascend directories until turbo.json *or* package.json with "workspaces" is found. */
+export async function findMonorepoRoot(
+	startDir = process.cwd(),
+): Promise<string> {
+	let dir = path.resolve(startDir); // absolute
 	while (true) {
-		const turboPath = join(currentDir, "turbo.json");
-		if (await Bun.file(turboPath).exists()) {
-			return currentDir;
+		const turboJson = path.join(dir, "turbo.json");
+		if (existsSync(turboJson)) return dir;
+
+		const pkgJsonPath = path.join(dir, "package.json");
+		if (existsSync(pkgJsonPath)) {
+			const { workspaces } = await Bun.file(pkgJsonPath).json();
+			if (workspaces) return dir;
 		}
-		const packagePath = join(currentDir, "package.json");
-		if (await Bun.file(packagePath).exists()) {
-			const packageJson = JSON.parse(await Bun.file(packagePath).text());
-			if (packageJson.workspaces) {
-				return currentDir;
-			}
-		}
-		const parentDir = join(currentDir, "..");
-		if (parentDir === currentDir) {
-			throw new Error("Not inside a Turborepo monorepo");
-		}
-		currentDir = parentDir;
+
+		const parent = dir.split(path.sep).slice(0, -1).join(path.sep) || path.sep;
+		if (parent === dir) throw new Error("❌ Not inside a Turborepo monorepo.");
+		dir = parent;
 	}
 }
 
-/**
- * Retrieves all workspace directories from the monorepo based on the
- * workspaces field in the root package.json.
- */
+/** Returns workspace directories expanded from package.json workspaces globs. */
 export async function getWorkspaces(root: string): Promise<string[]> {
-	const packageJsonPath = join(root, "package.json");
-	const packageJson = JSON.parse(await Bun.file(packageJsonPath).text());
-	const workspaceGlobs = packageJson.workspaces || [];
-	const workspaces: string[] = [];
-	for (const glob of workspaceGlobs) {
-		const [dir, pattern] = glob.split("/");
-		if (pattern === "*") {
-			const dirs = await readdir(join(root, dir), { withFileTypes: true });
-			for (const subdir of dirs) {
-				if (subdir.isDirectory()) {
-					const packagePath = join(root, dir, subdir.name, "package.json");
-					if (await Bun.file(packagePath).exists()) {
-						workspaces.push(join(dir, subdir.name));
-					}
-				}
-			}
+	const { workspaces = [] } = await Bun.file(
+		path.join(root, "package.json"),
+	).json();
+	const dirs: string[] = [];
+
+	for (const glob of workspaces) {
+		// Very small glob implementation: "<dir>/*"
+		const base = glob.replace("/*", "");
+		const abs = path.join(root, base);
+		if (!existsSync(abs)) continue;
+
+		for (const entry of readdirSync(abs, { withFileTypes: true })) {
+			if (!entry.isDirectory()) continue;
+			const candidate = path.join(base, entry.name);
+			if (existsSync(path.join(root, candidate, "package.json")))
+				dirs.push(candidate);
 		}
 	}
-	return workspaces;
+
+	return dirs.sort();
 }
 
-/**
- * Lists all tasks defined in the monorepo, showing which packages define each task.
- */
-export async function listTasks(root: string, workspaces: string[]) {
-	const taskMap = new Map<string, string[]>();
-	for (const workspace of workspaces) {
-		const packagePath = join(root, workspace, "package.json");
-		const packageJson = JSON.parse(await Bun.file(packagePath).text());
-		const scripts = packageJson.scripts || {};
-		for (const task in scripts) {
-			if (!taskMap.has(task)) {
-				taskMap.set(task, []);
-			}
-			taskMap.get(task)?.push(workspace);
+/** Pretty print tasks defined across all packages. */
+export async function listTasks(
+	root: string,
+	workspaces: string[],
+): Promise<void> {
+	const tasks = new Map<string, string[]>();
+
+	for (const ws of workspaces) {
+		const pkg = await Bun.file(path.join(root, ws, "package.json")).json();
+		for (const name of Object.keys(pkg.scripts ?? {})) {
+			(tasks.get(name) ?? tasks.set(name, []).get(name))?.push(ws);
 		}
 	}
-	console.log("Available tasks:");
-	for (const [task, packages] of taskMap) {
-		console.log(`- ${task}: ${packages.join(", ")}`);
+
+	console.info("📜 Available tasks:");
+	for (const [name, pkgs] of tasks) {
+		console.info(`  • ${name.padEnd(16)} → ${pkgs.join(", ")}`);
 	}
 }
 
-/**
- * Runs a specified task using Turborepo's CLI, with an optional package filter.
- */
-async function runTask(task: string, options: { filter?: string }) {
-	const args = ["bunx", "turbo", "run", task];
-	if (options.filter) {
-		args.push("--filter", options.filter);
-	}
-	await Bun.spawn(args, { stdio: "inherit" });
-}
+////////////////////////////////////////////////////////////////////////////////
+// 🚀 TurboSDK
+////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Opens the relevant configuration file in the user's default editor.
- * If a task and package are specified, opens the package's package.json;
- * otherwise, opens turbo.json.
- */
-export async function editTask(task?: string, packageName?: string) {
-	const root = await findMonorepoRoot();
-	const editor =
-		process.env.EDITOR || (process.platform === "win32" ? "notepad" : "vim");
-	let fileToEdit: string;
-	if (task && packageName) {
-		fileToEdit = join(root, "packages", packageName, "package.json");
-	} else {
-		fileToEdit = join(root, "turbo.json");
-	}
-	await Bun.spawn([editor, fileToEdit], { stdio: "inherit" });
-}
-
-/** Options for running a task */
-interface RunOptions {
-	filter?: string; // Filter tasks by package name
-	// Additional options can be added as needed
-}
-
-/** Result of running a task */
-interface RunResult {
-	success: boolean; // Indicates if the task completed successfully
-	tasks: any[]; // Array of task details (structure depends on Turborepo's JSON output)
-}
-
-/** Main class for interacting with Turborepo */
-class TurboSDK {
-	private rootPath: string;
-
-	/**
-	 * Initializes the SDK with the monorepo root path
-	 * @param rootPath Path to the monorepo root directory
-	 */
-	constructor(rootPath: string) {
-		this.rootPath = rootPath;
-		if (!this.isTurboInstalled()) {
+export class TurboSDK {
+	constructor(readonly root: string) {
+		if (!existsSync(path.join(this.root, "node_modules", ".bin", "turbo"))) {
 			throw new Error(
-				'Turborepo is not installed. Please run "npm install turbo" in your monorepo root.',
+				"Missing Turborepo. Run: bun add -D turbo && bun turbo --version",
 			);
 		}
 	}
 
-	/** Checks if Turborepo is installed locally in the monorepo */
-	private isTurboInstalled(): boolean {
-		const turboPath = join(this.rootPath, "node_modules", ".bin", "turbo");
-		return existsSync(turboPath);
+	static async create(root?: string): Promise<TurboSDK> {
+		const resolvedRoot = root ?? (await findMonorepoRoot());
+		return new TurboSDK(resolvedRoot);
 	}
 
 	/**
-	 * Runs a specified task using Turborepo
-	 * @param taskName Name of the task to run (e.g., 'build', 'test')
-	 * @param options Options to customize the task execution
-	 * @returns Promise resolving to the task execution result
+	 * Run a Turborepo task and return structured JSON output.
+	 *
+	 * Internally we call `bunx turbo run <task> --output-logs=json`
+	 * so results are machine-parsable.
 	 */
-	async runTask(
-		taskName: string,
-		options: RunOptions = {},
-	): Promise<RunResult> {
-		const args = ["run", taskName, "--output-logs=json"];
-		if (options.filter) {
-			args.push("--filter", options.filter);
+	async runTask(task: string, opts: RunOptions = {}): Promise<RunResult> {
+		// build argument vector
+		const argv = [
+			"bunx",
+			"turbo",
+			"run",
+			task,
+			"--output-logs=json",
+			"--color=always",
+		];
+		if (opts.filter) argv.push("--filter", opts.filter);
+
+		// IPC channel between parent and child (optional); useful for debug
+		let ipcHandler: ((msg: unknown) => void) | undefined;
+		if (opts.ipc) {
+			ipcHandler = (m) => console.debug("🔄 IPC:", m);
 		}
-		// Additional options can be appended here (e.g., --parallel, --scope)
 
-		const turboProcess = spawn("turbo", args, { cwd: this.rootPath });
-
-		let output = "";
-		turboProcess.stdout.on("data", (data) => {
-			output += data.toString();
+		const proc = Bun.spawn(argv, {
+			cwd: this.root,
+			stdio: ["inherit", "pipe", "inherit"],
+			ipc: ipcHandler,
+			timeout: opts.timeoutMs,
+			onExit(
+				_process: unknown,
+				code: number | null,
+				signal: number | null,
+				_error?: Error,
+			) {
+				if (signal !== null) console.warn(`⚠️  Exited via signal ${signal}`);
+				if (code !== 0 && code !== null)
+					console.error(`❌ Turbo finished with code ${code}`);
+			},
 		});
 
-		turboProcess.stderr.on("data", (data) => {
-			console.error("Turborepo Error:", data.toString());
-		});
+		const outText = await new Response(proc.stdout).text();
+		await proc.exited; // ensure exit handler fired
 
-		await new Promise((resolve) => turboProcess.on("close", resolve));
-
+		// parse structured logs
 		try {
-			const jsonOutput = JSON.parse(output);
-			// Assuming jsonOutput has 'success' and 'tasks' properties based on Turborepo's JSON format
-			return {
-				success: jsonOutput.success || turboProcess.exitCode === 0,
-				tasks: jsonOutput.tasks || [],
-			};
-		} catch (error) {
-			if (error instanceof Error) {
-				throw new Error(`Failed to parse Turborepo output: ${error.message}`);
-			}
-			throw new Error(`Failed to parse Turborepo output: ${String(error)}`);
+			const { success, tasks } = JSON.parse(outText);
+			return { success, tasks };
+		} catch {
+			return { success: false, tasks: [] };
 		}
 	}
 
-	// Future methods to add:
-	// async getConfig(): Promise<TurboConfig> { ... }
-	// async setConfig(config: TurboConfig): Promise<void> { ... }
-	// async getCacheStatus(taskName: string): Promise<CacheStatus> { ... }
+	/** Quick synchronous wrapper – handy for small CLI utilities. */
+	runTaskSync(task: string, opts: RunOptions = {}): RunResult {
+		const argv = [
+			"turbo",
+			"run",
+			task,
+			"--output-logs=json",
+			...(opts.filter ? ["--filter", opts.filter] : []),
+		];
+
+		const { stdout, success } = Bun.spawnSync(argv, {
+			cwd: this.root,
+			stdio: ["ignore", "pipe", "ignore"],
+			timeout: opts.timeoutMs,
+		});
+
+		try {
+			const outStr =
+				typeof stdout === "string"
+					? stdout
+					: Buffer.isBuffer(stdout)
+						? stdout.toString()
+						: "";
+			const { tasks } = JSON.parse(outStr);
+			return { success, tasks };
+		} catch {
+			return { success: false, tasks: [] };
+		}
+	}
 }
 
-export { TurboSDK, type RunOptions, type RunResult };
+////////////////////////////////////////////////////////////////////////////////
+// 🛠️ CLI driver (bun run turbo-sdk <cmd>)
+////////////////////////////////////////////////////////////////////////////////
+
+if (import.meta.main) {
+	const [cmd = "help", ...rest] = Bun.argv.slice(2);
+	const sdk = new TurboSDK(process.cwd());
+
+	switch (cmd) {
+		case "root": {
+			console.log(sdk.root);
+			break;
+		}
+		case "workspaces": {
+			console.log((await getWorkspaces(sdk.root)).join("\n"));
+			break;
+		}
+		case "tasks": {
+			listTasks(sdk.root, await getWorkspaces(sdk.root));
+			break;
+		}
+		case "run": {
+			const [task, ...flags] = rest;
+			if (!task) {
+				console.error("❌ turbo-sdk run <task> [--filter <pkg>]");
+				process.exit(1);
+			}
+			const filter =
+				flags[0] === "--filter" || flags[0] === "-f" ? flags[1] : undefined;
+			const { success } = await sdk.runTask(task, { filter });
+			process.exit(success ? 0 : 1);
+			break;
+		}
+		default:
+			console.log(
+				[
+					"turbo-sdk commands:",
+					"  root                → print monorepo root",
+					"  workspaces          → list workspaces",
+					"  tasks               → show script matrix",
+					"  run <task> [-f pkg] → run task via turborepo",
+				].join("\n"),
+			);
+	}
+}

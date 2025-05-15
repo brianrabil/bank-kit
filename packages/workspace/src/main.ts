@@ -1,13 +1,13 @@
 #!/usr/bin/env bun
 
-import { readdir } from "node:fs/promises";
-import { join } from "node:path";
+import { TurboSDK, findMonorepoRoot, getWorkspaces, listTasks } from "./lib";
 
 /**
  * Main CLI entry point to handle user commands.
  */
 async function main() {
 	try {
+		const turbo = new TurboSDK(process.cwd());
 		const root = await findMonorepoRoot();
 		const workspaces = await getWorkspaces(root);
 
@@ -23,19 +23,7 @@ async function main() {
 			const filter = process.argv[4]
 				? process.argv[4].replace("--filter=", "")
 				: undefined;
-			await runTask(task, { filter });
-		} else if (command === "edit") {
-			const subcommand = process.argv[3];
-			if (subcommand === "config") {
-				await editTask();
-			} else {
-				const packageName = process.argv[4];
-				if (!subcommand || !packageName) {
-					console.error("Task name and package name are required for editing");
-					process.exit(1);
-				}
-				await editTask(subcommand, packageName);
-			}
+			await turbo.runTask(task, { filter });
 		} else {
 			console.log("Usage: turbo-util <command>");
 			console.log("Commands:");

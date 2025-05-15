@@ -1,5 +1,5 @@
-import DatePickerWithRange from "@/registry/default/examples/date-picker-with-range";
 import { Card, CardContent } from "@/registry/new-york/ui/card";
+import DatePickerWithRange from "@/registry/new-york/ui/date-picker-with-range";
 import { Label } from "@/registry/new-york/ui/label";
 
 export function DatePickerCard() {

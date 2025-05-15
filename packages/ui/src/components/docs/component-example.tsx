@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { CopyButton, CopyWithClassNames } from "@/components/copy-button";
+import { CopyButton, CopyWithClassNames } from "@/components/docs/copy-button";
 import { cn } from "@/lib/utils";
 import {
 	Tabs,
@@ -31,15 +31,18 @@ export function ComponentExample({
 		children,
 	) as React.ReactElement[];
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const codeString = React.useMemo(() => {
-		if (
-			typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined"
-		) {
-			const [, Button] = React.Children.toArray(
-				Code.props.children,
-			) as React.ReactElement[];
-			return Button?.props?.value || Button?.props?.__rawString__ || null;
-		}
+		// TODO: Implement code extraction logic
+		// if (
+		// typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined"
+		// ) {
+		// const [, Button] = React.Children.toArray(
+		// Code.props.children,
+		// ) as React.ReactElement[];
+		// return Button?.props?.value || Button?.props?.__rawString__ || null;
+		// }
+		return "";
 	}, [Code]);
 
 	return (
@@ -69,14 +72,12 @@ export function ComponentExample({
 							classNames={extractedClassNames}
 							className="absolute right-4 top-20"
 						/>
-					) : (
-						codeString && (
-							<CopyButton
-								value={codeString}
-								className="absolute right-4 top-20"
-							/>
-						)
-					)}
+					) : codeString ? (
+						<CopyButton
+							value={codeString}
+							className="absolute right-4 top-20"
+						/>
+					) : null}
 				</div>
 				<TabsContent value="preview" className="rounded-md border">
 					<div

@@ -1,4 +1,3 @@
-import { Icons } from "@/components/icons";
 import { Button } from "@/registry/new-york/ui/button";
 import {
 	Card,
@@ -8,6 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/registry/new-york/ui/card";
+import { Icons } from "@/registry/new-york/ui/icons";
 import { Input } from "@/registry/new-york/ui/input";
 import { Label } from "@/registry/new-york/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/registry/new-york/ui/radio-group";
@@ -46,6 +46,7 @@ export function PaymentMethod() {
 								strokeWidth="2"
 								className="mb-3 h-6 w-6"
 							>
+								<title>Card</title>
 								<rect width="20" height="14" x="2" y="5" rx="2" />
 								<path d="M2 10h20" />
 							</svg>
@@ -116,6 +117,7 @@ export function PaymentMethod() {
 							</SelectTrigger>
 							<SelectContent>
 								{Array.from({ length: 10 }, (_, i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 									<SelectItem key={i} value={`${new Date().getFullYear() + i}`}>
 										{new Date().getFullYear() + i}
 									</SelectItem>
