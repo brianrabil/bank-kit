@@ -1,29 +1,28 @@
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps, cva } from "class-variance-authority";
-import { PanelLeftIcon } from "lucide-react";
-import * as React from "react";
-
-import { Button } from "@bank-kit/ui/components/ui/button";
-import { Input } from "@bank-kit/ui/components/ui/input";
-import { Separator } from "@bank-kit/ui/components/ui/separator";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
+import { Input } from "@/registry/new-york/ui/input";
+import { Separator } from "@/registry/new-york/ui/separator";
 import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
 	SheetTitle,
-} from "@bank-kit/ui/components/ui/sheet";
-import { Skeleton } from "@bank-kit/ui/components/ui/skeleton";
+} from "@/registry/new-york/ui/sheet";
+import { Skeleton } from "@/registry/new-york/ui/skeleton";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "@bank-kit/ui/components/ui/tooltip";
-import { useIsMobile } from "@bank-kit/ui/hooks/use-mobile";
-import { cn } from "@bank-kit/ui/lib/utils";
+} from "@/registry/new-york/ui/tooltip";
+import { Button } from "@/registry/new-york/ui/button";
+import { Slot } from "@radix-ui/react-slot";
+import { type VariantProps, cva } from "class-variance-authority";
+import { PanelLeftIcon } from "lucide-react";
+import * as React from "react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

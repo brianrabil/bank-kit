@@ -1,9 +1,12 @@
 {
 	"extends": "@bank-kit/typescript-config/react-library.json",
 	"compilerOptions": {
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
 		"baseUrl": ".",
 		"paths": {
-			"@bank-kit/ui/*": ["./src/*"]
+			"@/*": ["./src/*.ts", "./src/*.tsx"]
 		}
 	},
 	"include": ["."],

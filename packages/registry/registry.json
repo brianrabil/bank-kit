@@ -4,6 +4,18 @@
 	"homepage": "https://bank-kit.com",
 	"items": [
 		{
+			"name": "tabs",
+			"title": "Tabs",
+			"description": "A tabs component",
+			"type": "registry:component",
+			"files": [
+				{
+					"path": "src/tabs/tabs.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
 			"name": "pill",
 			"title": "Pill",
 			"description": "A pill component",

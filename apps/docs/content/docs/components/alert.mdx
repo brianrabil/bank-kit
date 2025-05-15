@@ -1,26 +1,77 @@
 ---
 title: Alert
-description: Alert component for Bank Kit
+description: Displays a callout for user attention.
+component: true
 ---
 
-import {Alert, AlertTitle, AlertDescription} from "@bank-kit/ui/components/ui/alert";
+<ComponentPreview
+  name="alert-demo"
+  title="An alert with an icon, title and description."
+  description="An alert with an icon, title and description. The title says 'Heads up!' and the description is 'You can add components to your app using the cli.'."
+/>
 
-<div className="flex flex-col gap-5 my-5">
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add alert
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="alert" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+```
+
+```tsx
 <Alert>
-  <AlertTitle>
-    Alert Title
-  </AlertTitle>
+  <Terminal className="h-4 w-4" />
+  <AlertTitle>Heads up!</AlertTitle>
   <AlertDescription>
-    Alert Description
+    You can add components and dependencies to your app using the cli.
   </AlertDescription>
 </Alert>
+```
 
-<Alert variant="destructive">
-  <AlertTitle>
-    Alert Title
-  </AlertTitle>
-  <AlertDescription>
-    Alert Description
-  </AlertDescription>
-</Alert>
-</div>
+## Examples
+
+### Default
+
+<ComponentPreview
+  name="alert-demo"
+  title="An alert with an icon, title and description."
+  description="An alert with an icon, title and description. The title says 'Heads up!' and the description is 'You can add components to your app using the cli.'."
+/>
+
+### Destructive
+
+<ComponentPreview
+  name="alert-destructive"
+  title="An alert with a destructive variant."
+  description="An alert with a destructive variant. The title says 'Delete this item?' and the description is 'This action cannot be undone.'."
+/>
