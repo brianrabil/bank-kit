@@ -1,20 +1,59 @@
-# registry-template
+# Bank Kit Monorepo
 
-You can use the `shadcn` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any React project.
+Bank Kit is a collection of applications and packages for building modern banking experiences. The project uses **Bun**, **Turborepo** and **TypeScript** to manage multiple apps and shared libraries. It combines a custom UI library, a component registry, a documentation site and utilities that can be consumed across the ecosystem.
+
+## Repository Layout
+
+```
+apps/       # runnable applications
+packages/   # shared libraries and tooling
+```
+
+### Applications
+
+- **docs/** – Next.js 15 documentation site built with Fumadocs.
+- **api/** – Bun server exposing the component registry.
+- **cli/** – Early WIP CLI written in TypeScript/Bun.
+
+### Packages
+
+- **ui/** – Enterprise‑grade component library built on Shadcn UI.
+- **registry/** – Component registry definition used by the API.
+- **typescript-config/** – Shared tsconfig bases.
+- **utils/** – Utility scripts and configuration for docs and other packages.
+- **workspace/** – Turborepo helper CLI.
+
+## Requirements
+
+- [Bun](https://bun.sh) 1.2+
+- Node.js 20+ (for Next.js apps)
 
 ## Getting Started
 
-This is a template for creating a custom registry using Next.js.
+Install dependencies for the entire workspace:
 
-- The template uses a `registry.json` file to define components and their files.
-- The `shadcn build` command is used to build the registry.
-- The registry items are served as static files under `public/r/[name].json`.
-- The template also includes a route handler for serving registry items.
-- Every registry item are compatible with the `shadcn` CLI.
-- We have also added v0 integration using the `Open in v0` api.
+```bash
+bun install
+```
 
-## Documentation
+During development you will mainly use the following scripts (run from the repository root):
 
-Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.
+```bash
+bun run dev       # start all dev servers via turbo
+bun run build     # build all packages and apps
+bun run lint      # run Biome across packages
+```
+
+Each package or app also exposes its own scripts. See the individual `README.md` files under `apps/` and `packages/` for more details.
+
+## Project Highlights
+
+- **Shadcn UI integration** – shared component registry and UI library.
+- **TypeScript everywhere** – strict configs in `packages/typescript-config`.
+- **Turborepo** – task running and caching for the monorepo.
+- **Next.js 15** – modern React features with the App Router in the docs app.
+- **Bun runtime** – fast scripts, CLI tools and the API server.
+
+## License
+
+This project is released under the [MIT License](LICENSE).
