@@ -1,4 +1,4 @@
-import { Button } from "@bank-kit/ui/components/ui/button";
+import { Button } from "@bank-kit/ui/src/registry/new-york/ui/button";
 import { cn } from "@bank-kit/ui/lib/utils";
 
 export function OpenInV0Button({

@@ -1,0 +1,11 @@
+# Project Structure Guide
+
+- The project is organized into `apps/` (for applications), `packages/` (for shared libraries and components), and root-level configuration.
+- Each app and package has its own `package.json` and `tsconfig.json`.
+- Shared UI components are in `packages/ui/`.
+- Documentation lives in `apps/docs/`.
+- Use the appropriate directory for new features or components.
+description:
+globs:
+alwaysApply: false
+---

@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "@bank-kit/ui/components/ui/table";
+import { Table } from "@bank-kit/ui/src/registry/new-york/ui/table";
 import { cn } from "@bank-kit/ui/lib/utils";
 import {
 	type ColumnDef,

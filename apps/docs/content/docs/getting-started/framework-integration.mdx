@@ -1,0 +1,534 @@
+---
+title: Framework Integration
+description: Framework-specific integration guides for Bank Kit UI.
+---
+
+Bank Kit UI is designed to work seamlessly with modern React frameworks. This guide covers framework-specific setup and optimization tips.
+
+## Next.js Integration
+
+### App Router (Recommended)
+
+Bank Kit UI is fully compatible with Next.js 13+ App Router:
+
+```tsx title="app/layout.tsx"
+import "@bank-kit/ui/globals.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Bank Kit Banking App",
+	description: "Secure banking interface built with Bank Kit UI",
+};
+
+export default function RootLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+	return (
+		<html lang="en">
+			<body>{children}</body>
+		</html>
+	);
+}
+```
+
+### Pages Router
+
+For Next.js Pages Router setup:
+
+```tsx title="pages/_app.tsx"
+import "@bank-kit/ui/globals.css";
+import type { AppProps } from "next/app";
+
+export default function App({ Component, pageProps }: AppProps) {
+	return <Component {...pageProps} />;
+}
+```
+
+### Optimization Features
+
+Bank Kit UI takes advantage of Next.js optimization features:
+
+**Automatic Code Splitting**:
+```tsx title="app/dashboard/page.tsx"
+import { lazy, Suspense } from "react";
+
+const TransactionChart = lazy(() => import("@/components/transaction-chart"));
+
+export default function Dashboard() {
+	return (
+		<div>
+			<Suspense fallback={<div>Loading chart...</div>}>
+				<TransactionChart />
+			</Suspense>
+		</div>
+	);
+}
+```
+
+**Server Components**:
+```tsx title="app/accounts/page.tsx"
+import { AccountBalance } from "@bank-kit/ui/components/account-balance";
+
+async function getAccountData() {
+	// Fetch data on the server
+	const res = await fetch("https://api.yourbank.com/accounts", {
+		headers: { Authorization: `Bearer ${process.env.API_TOKEN}` },
+	});
+	return res.json();
+}
+
+export default async function AccountsPage() {
+	const accounts = await getAccountData();
+
+	return (
+		<div className="grid gap-6">
+			{accounts.map((account) => (
+				<AccountBalance key={account.id} {...account} />
+			))}
+		</div>
+	);
+}
+```
+
+## Vite Integration
+
+### Basic Setup
+
+```tsx title="src/main.tsx"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "@bank-kit/ui/globals.css";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+	<React.StrictMode>
+		<App />
+	</React.StrictMode>,
+);
+```
+
+### Vite Configuration
+
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+
+export default defineConfig({
+	plugins: [react()],
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+		},
+	},
+	optimizeDeps: {
+		include: ["@bank-kit/ui"],
+	},
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					vendor: ["react", "react-dom"],
+					ui: ["@bank-kit/ui"],
+				},
+			},
+		},
+	},
+});
+```
+
+## React Router Integration
+
+### Setup with React Router v6
+
+```tsx title="src/App.tsx"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LoginPage } from "@/pages/login";
+import { DashboardPage } from "@/pages/dashboard";
+import { AccountsPage } from "@/pages/accounts";
+
+export default function App() {
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/" element={<DashboardLayout />}>
+					<Route index element={<DashboardPage />} />
+					<Route path="accounts" element={<AccountsPage />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
+	);
+}
+```
+
+### Protected Routes
+
+```tsx title="src/components/protected-route.tsx"
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
+
+interface ProtectedRouteProps {
+	children: React.ReactNode;
+}
+
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
+	const { isAuthenticated, isLoading } = useAuth();
+	const location = useLocation();
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!isAuthenticated) {
+		return <Navigate to="/login" state={{ from: location }} replace />;
+	}
+
+	return <>{children}</>;
+}
+```
+
+## Astro Integration
+
+### Setup
+
+```astro title="src/layouts/Layout.astro"
+---
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	@import "@bank-kit/ui/globals.css";
+</style>
+```
+
+### React Components in Astro
+
+```astro title="src/pages/dashboard.astro"
+---
+import Layout from '@/layouts/Layout.astro';
+import { AccountBalance } from '@bank-kit/ui/components/account-balance';
+---
+
+<Layout title="Dashboard">
+	<main class="container mx-auto p-6">
+		<h1 class="text-3xl font-bold mb-8">Dashboard</h1>
+		<AccountBalance
+			client:load
+			accountName="Primary Checking"
+			balance={2451.67}
+			accountType="checking"
+			lastTransaction="2 hours ago"
+		/>
+	</main>
+</Layout>
+```
+
+## Remix Integration
+
+### Setup
+
+```tsx title="app/root.tsx"
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import {
+	Links,
+	LiveReload,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+} from "@remix-run/react";
+import styles from "@bank-kit/ui/globals.css";
+
+export const links: LinksFunction = () => [
+	{ rel: "stylesheet", href: styles },
+];
+
+export const meta: MetaFunction = () => ({
+	charset: "utf-8",
+	title: "Bank Kit Banking App",
+	viewport: "width=device-width,initial-scale=1",
+});
+
+export default function App() {
+	return (
+		<html lang="en">
+			<head>
+				<Meta />
+				<Links />
+			</head>
+			<body>
+				<Outlet />
+				<ScrollRestoration />
+				<Scripts />
+				<LiveReload />
+			</body>
+		</html>
+	);
+}
+```
+
+### Route with Data Loading
+
+```tsx title="app/routes/dashboard.tsx"
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { AccountBalance } from "@bank-kit/ui/components/account-balance";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+	// Fetch account data server-side
+	const accounts = await fetchUserAccounts(request);
+	return json({ accounts });
+}
+
+export default function Dashboard() {
+	const { accounts } = useLoaderData<typeof loader>();
+
+	return (
+		<div className="container mx-auto p-6">
+			<h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+			<div className="grid gap-6">
+				{accounts.map((account) => (
+					<AccountBalance key={account.id} {...account} />
+				))}
+			</div>
+		</div>
+	);
+}
+```
+
+## TanStack Router Integration
+
+### Setup
+
+```tsx title="src/main.tsx"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+import "@bank-kit/ui/globals.css";
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+	interface Register {
+		router: typeof router;
+	}
+}
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+	<React.StrictMode>
+		<RouterProvider router={router} />
+	</React.StrictMode>,
+);
+```
+
+### Route Definition
+
+```tsx title="src/routes/dashboard.tsx"
+import { createFileRoute } from "@tanstack/react-router";
+import { AccountBalance } from "@bank-kit/ui/components/account-balance";
+
+export const Route = createFileRoute("/dashboard")({
+	component: Dashboard,
+	loader: async () => {
+		// Load data for the route
+		const accounts = await fetchAccounts();
+		return { accounts };
+	},
+});
+
+function Dashboard() {
+	const { accounts } = Route.useLoaderData();
+
+	return (
+		<div className="container mx-auto p-6">
+			<h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+			<div className="grid gap-6">
+				{accounts.map((account) => (
+					<AccountBalance key={account.id} {...account} />
+				))}
+			</div>
+		</div>
+	);
+}
+```
+
+## Performance Optimization
+
+### Bundle Analysis
+
+Monitor your bundle size with these framework-specific tools:
+
+**Next.js**:
+```bash
+npm install @next/bundle-analyzer
+```
+
+```js title="next.config.js"
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+	// Your Next.js config
+});
+```
+
+**Vite**:
+```bash
+npm install rollup-plugin-visualizer
+```
+
+**Webpack**:
+```bash
+npm install webpack-bundle-analyzer
+```
+
+### Tree Shaking
+
+Bank Kit UI supports tree shaking. Import only the components you need:
+
+```tsx
+// ✅ Good - Tree shakeable
+import { Button } from "@bank-kit/ui/components/button";
+import { Card } from "@bank-kit/ui/components/card";
+
+// ❌ Avoid - Imports entire library
+import * as BankKit from "@bank-kit/ui";
+```
+
+### Code Splitting Strategies
+
+**Route-based splitting**:
+```tsx
+import { lazy } from "react";
+
+const AccountsPage = lazy(() => import("@/pages/accounts"));
+const TransactionsPage = lazy(() => import("@/pages/transactions"));
+```
+
+**Component-based splitting**:
+```tsx
+import { lazy } from "react";
+
+const LargeChart = lazy(() => import("@/components/large-chart"));
+```
+
+## SSR Considerations
+
+### Hydration Patterns
+
+For components with client-side state:
+
+```tsx title="components/client-only.tsx"
+import { useEffect, useState } from "react";
+
+export function ClientOnly({ children }: { children: React.ReactNode }) {
+	const [hasMounted, setHasMounted] = useState(false);
+
+	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+
+	if (!hasMounted) {
+		return null;
+	}
+
+	return <>{children}</>;
+}
+```
+
+Usage:
+```tsx
+import { ClientOnly } from "@/components/client-only";
+import { InteractiveChart } from "@/components/interactive-chart";
+
+export default function Dashboard() {
+	return (
+		<div>
+			<h1>Dashboard</h1>
+			<ClientOnly>
+				<InteractiveChart />
+			</ClientOnly>
+		</div>
+	);
+}
+```
+
+### Server-Safe Components
+
+Most Bank Kit UI components are server-safe, but for dynamic content:
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function UserBalance() {
+	const isClient = useIsClient();
+	
+	if (!isClient) {
+		return <div className="h-8 bg-gray-200 animate-pulse rounded" />;
+	}
+
+	return <AccountBalance {...userAccount} />;
+}
+```
+
+## Framework-Specific Features
+
+### Next.js Features
+
+- **Image Optimization**: Use `next/image` with Bank Kit UI layouts
+- **Font Optimization**: Integrate with `next/font`
+- **Middleware**: Implement auth checks before reaching components
+
+### Vite Features
+
+- **Hot Module Replacement**: Automatic updates during development
+- **ES Modules**: Native ESM support for faster builds
+- **Plugin Ecosystem**: Rich plugin ecosystem for additional features
+
+### Remix Features
+
+- **Progressive Enhancement**: Components work without JavaScript
+- **Nested Routing**: Nested layouts with Bank Kit UI components
+- **Data Loading**: Server-side data loading with type safety
+
+## Troubleshooting
+
+### Common Issues
+
+**Hydration Mismatches**: Ensure server and client render the same content
+**CSS Import Order**: Import Bank Kit UI styles before custom styles
+**Path Resolution**: Verify alias configuration in your bundler
+**Tree Shaking**: Check that imports are using the correct syntax
+
+### Performance Issues
+
+**Large Bundle Size**: Use dynamic imports and code splitting
+**Slow Initial Load**: Implement proper caching strategies
+**Memory Leaks**: Properly cleanup component state and subscriptions
+
+For framework-specific issues, check our [GitHub Issues](https://github.com/bank-kit/ui/issues) or consult your framework's documentation.

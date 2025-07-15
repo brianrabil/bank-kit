@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 import { cn } from "@bank-kit/ui/lib/utils";
-import { Input } from "@bank-kit/ui/components/ui/input";
+import { Input } from "@bank-kit/ui/registry/new-york/ui/input";
 import { debounce } from "@tanstack/pacer";
 
 /* -------------------------------------------------------------------------------------------------

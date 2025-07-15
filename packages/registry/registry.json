@@ -220,6 +220,19 @@
 					"type": "registry:component"
 				}
 			]
+		},
+		{
+			"name": "tubelight-navbar",
+			"title": "Tubelight Navbar",
+			"description": "A responsive, animated navigation bar using shadcn, Tailwind, and lucide-react.",
+			"type": "registry:component",
+			"dependencies": ["lucide-react", "motion"],
+			"files": [
+				{
+					"path": "src/tubelight-navbar/tubelight-navbar.tsx",
+					"type": "registry:component"
+				}
+			]
 		}
 	]
 }

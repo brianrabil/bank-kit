@@ -17,7 +17,7 @@ import {
 	TableRow,
 	TableCell,
 	TableHead,
-} from "@bank-kit/ui/components/ui/table";
+} from "@bank-kit/ui/registry/new-york/ui/table";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
 	DndContext,

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@bank-kit/ui/components/ui/button";
-import { Input } from "@bank-kit/ui/components/ui/input";
+import { Button } from "@bank-kit/ui/registry/new-york/ui/button";
+import { Input } from "@bank-kit/ui/registry/new-york/ui/input";
 import { useForm } from "@tanstack/react-form";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";

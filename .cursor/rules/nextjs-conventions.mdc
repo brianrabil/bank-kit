@@ -1,0 +1,19 @@
+# Next.js Project Conventions
+
+- Follow Next.js naming conventions for special files (e.g., `layout.tsx`, `page.tsx`).
+- Implement proper error boundaries.
+- Implement proper metadata for SEO.
+- Utilize the Next.js `Image` component for optimized images.
+- Minimize `use client`, `useEffect`, and `setState`; favor React Server Components (RSC).
+- Wrap client components in `Suspense` with a fallback.
+- Use dynamic loading for non-critical components.
+- Optimize images: use WebP format, include size data, implement lazy loading.
+- Use `nuqs` for URL search parameter state management.
+- Optimize Web Vitals (LCP, CLS, FID).
+- Follow Next.js docs for Data Fetching, Rendering, and Routing.
+- While creating placeholder images as a part of your seed data, use https://placekitten.com/
+- Target **Next.js 15+** and leverage the App Router, React Server Components (RSC), and SSR capabilities.
+description:
+globs:
+alwaysApply: false
+---
