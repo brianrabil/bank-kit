@@ -15,24 +15,205 @@
 				}
 			]
 		},
-		{
-			"name": "pill",
-			"title": "Pill",
-			"description": "A pill component",
-			"type": "registry:component",
-			"dependencies": ["lucide-react", "motion"],
-			"files": [
-				{
-					"path": "src/pill/pill.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "hello-world",
-			"type": "registry:component",
-			"title": "Hello World",
-			"description": "A simple hello world component",
+                {
+                        "name": "pill",
+                        "title": "Pill",
+                        "description": "A pill component",
+                        "type": "registry:component",
+                        "dependencies": ["lucide-react", "motion"],
+                        "files": [
+                                {
+                                        "path": "src/pill/pill.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "accordion",
+                        "title": "Accordion",
+                        "description": "An accordion component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+                        "files": [
+                                {
+                                        "path": "src/accordion/accordion.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "alert",
+                        "title": "Alert",
+                        "description": "An alert component",
+                        "type": "registry:component",
+                        "dependencies": ["class-variance-authority"],
+                        "files": [
+                                {
+                                        "path": "src/alert/alert.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "alert-dialog",
+                        "title": "Alert Dialog",
+                        "description": "An alert dialog component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-alert-dialog"],
+                        "files": [
+                                {
+                                        "path": "src/alert-dialog/alert-dialog.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "aspect-ratio",
+                        "title": "Aspect Ratio",
+                        "description": "An aspect ratio component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-aspect-ratio"],
+                        "files": [
+                                {
+                                        "path": "src/aspect-ratio/aspect-ratio.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "avatar",
+                        "title": "Avatar",
+                        "description": "An avatar component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-avatar"],
+                        "files": [
+                                {
+                                        "path": "src/avatar/avatar.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "badge",
+                        "title": "Badge",
+                        "description": "A badge component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+                        "files": [
+                                {
+                                        "path": "src/badge/badge.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "breadcrumb",
+                        "title": "Breadcrumb",
+                        "description": "A breadcrumb component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+                        "files": [
+                                {
+                                        "path": "src/breadcrumb/breadcrumb.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "button",
+                        "title": "Button",
+                        "description": "A button component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+                        "files": [
+                                {
+                                        "path": "src/button/button.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "card",
+                        "title": "Card",
+                        "description": "A card component",
+                        "type": "registry:component",
+                        "files": [
+                                {
+                                        "path": "src/card/card.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "code-block",
+                        "title": "Code Block",
+                        "description": "A code block component",
+                        "type": "registry:component",
+                        "dependencies": ["prism-react-renderer"],
+                        "files": [
+                                {
+                                        "path": "src/code-block/code-block.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "container",
+                        "title": "Container",
+                        "description": "A responsive container component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+                        "files": [
+                                {
+                                        "path": "src/container/container.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "dashboard-table",
+                        "title": "Dashboard Table",
+                        "description": "A draggable dashboard table component",
+                        "type": "registry:component",
+                        "dependencies": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/modifiers", "@tanstack/react-table"],
+                        "files": [
+                                {
+                                        "path": "src/dashboard-table/dashboard-table.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "text",
+                        "title": "Text",
+                        "description": "A typography text component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+                        "files": [
+                                {
+                                        "path": "src/text/text.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "transactions-table",
+                        "title": "Transactions Table",
+                        "description": "A transactions table component",
+                        "type": "registry:component",
+                        "dependencies": ["@tanstack/react-table", "date-fns", "lucide-react"],
+                        "files": [
+                                {
+                                        "path": "src/transactions-table/transactions-table.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "hello-world",
+                        "type": "registry:component",
+                        "title": "Hello World",
+                        "description": "A simple hello world component",
 			"files": [
 				{
 					"path": "src/hello-world/hello-world.tsx",
