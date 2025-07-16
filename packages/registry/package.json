@@ -7,13 +7,26 @@
 		"build": "shadcn build"
 	},
 	"dependencies": {
-		"@bank-kit/ui": "workspace:*",
-		"motion": "^12.11.0",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"shadcn": "^2.6.0-canary.2",
-		"zod": "^3.24.2"
-	},
+               "@bank-kit/ui": "workspace:*",
+               "@dnd-kit/core": "^6.3.1",
+               "@dnd-kit/modifiers": "^9.0.0",
+               "@dnd-kit/sortable": "^10.0.0",
+               "@radix-ui/react-accordion": "^1.2.3",
+               "@radix-ui/react-alert-dialog": "^1.1.6",
+               "@radix-ui/react-aspect-ratio": "^1.1.2",
+               "@radix-ui/react-avatar": "^1.1.3",
+               "@radix-ui/react-slot": "^1.2.2",
+               "@tanstack/react-table": "^8.21.3",
+               "class-variance-authority": "^0.7.1",
+               "date-fns": "^4.1.0",
+               "lucide-react": "^0.488.0",
+               "motion": "^12.11.0",
+               "prism-react-renderer": "^2.4.1",
+               "react": "^19.0.0",
+               "react-dom": "^19.0.0",
+               "shadcn": "^2.6.0-canary.2",
+               "zod": "^3.24.2"
+        },
 	"devDependencies": {
 		"@bank-kit/typescript-config": "workspace:*",
 		"@types/react": "^19",
