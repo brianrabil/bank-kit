@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:component",
+  "title": "Label",
+  "description": "A form label component",
+  "files": [
+    {
+      "path": "src/label/label.tsx",
+      "content": "\"\\\"use client\\\";\\n\\nimport * as LabelPrimitive from \\\"@radix-ui/react-label\\\";\\nimport type * as React from \\\"react\\\";\\n\\nimport { cn } from \\\"@bank-kit/ui/lib/utils\\\";\\n\\nfunction Label({\\n\\tclassName,\\n\\t...props\\n}: React.ComponentProps<typeof LabelPrimitive.Root>) {\\n\\treturn (\\n\\t\\t<LabelPrimitive.Root\\n\\t\\t\\tdata-slot=\\\"label\\\"\\n\\t\\t\\tclassName={cn(\\n\\t\\t\\t\\t\\\"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50\\\",\\n\\t\\t\\t\\tclassName,\\n\\t\\t\\t)}\\n\\t\\t\\t{...props}\\n\\t\\t/>\\n\\t);\\n}\\n\\nexport { Label };\\n\"",
+      "type": "registry:component"
+    }
+  ]
+}

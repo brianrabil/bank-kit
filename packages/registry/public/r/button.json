@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:component",
+  "title": "Button",
+  "description": "A button component",
+  "files": [
+    {
+      "path": "src/button/button.tsx",
+      "content": "import { Slot } from \"@radix-ui/react-slot\";\nimport { type VariantProps, cva } from \"class-variance-authority\";\nimport type * as React from \"react\";\n\nimport { cn } from \"@bank-kit/ui/lib/utils\";\n\nconst buttonVariants = cva(\n\t\"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive\",\n\t{\n\t\tvariants: {\n\t\t\tvariant: {\n\t\t\t\tdefault:\n\t\t\t\t\t\"bg-primary text-primary-foreground shadow-xs hover:bg-primary/90\",\n\t\t\t\tdestructive:\n\t\t\t\t\t\"bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60\",\n\t\t\t\toutline:\n\t\t\t\t\t\"border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50\",\n\t\t\t\tsecondary:\n\t\t\t\t\t\"bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80\",\n\t\t\t\tghost:\n\t\t\t\t\t\"hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50\",\n\t\t\t\tlink: \"text-primary underline-offset-4 hover:underline\",\n\t\t\t},\n\t\t\tsize: {\n\t\t\t\tdefault: \"h-9 px-4 py-2 has-[>svg]:px-3\",\n\t\t\t\tsm: \"h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5\",\n\t\t\t\tlg: \"h-10 rounded-md px-6 has-[>svg]:px-4\",\n\t\t\t\ticon: \"size-9\",\n\t\t\t},\n\t\t},\n\t\tdefaultVariants: {\n\t\t\tvariant: \"default\",\n\t\t\tsize: \"default\",\n\t\t},\n\t},\n);\n\nexport type ButtonProps = React.ComponentProps<\"button\"> &\n\tVariantProps<typeof buttonVariants> & {\n\t\tasChild?: boolean;\n\t};\n\nfunction Button({\n\tclassName,\n\tvariant,\n\tsize,\n\tasChild = false,\n\t...props\n}: ButtonProps) {\n\tconst Comp = asChild ? Slot : \"button\";\n\n\treturn (\n\t\t<Comp\n\t\t\tdata-slot=\"button\"\n\t\t\tclassName={cn(buttonVariants({ variant, size, className }))}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport { Button, buttonVariants };\n",
+      "type": "registry:component"
+    }
+  ]
+}
