@@ -15,24 +15,37 @@
 				}
 			]
 		},
-		{
-			"name": "pill",
-			"title": "Pill",
-			"description": "A pill component",
-			"type": "registry:component",
-			"dependencies": ["lucide-react", "motion"],
-			"files": [
-				{
-					"path": "src/pill/pill.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "hello-world",
-			"type": "registry:component",
-			"title": "Hello World",
-			"description": "A simple hello world component",
+                {
+                        "name": "pill",
+                        "title": "Pill",
+                        "description": "A pill component",
+                        "type": "registry:component",
+                        "dependencies": ["lucide-react", "motion"],
+                        "files": [
+                                {
+                                        "path": "src/pill/pill.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "accordion",
+                        "title": "Accordion",
+                        "description": "An accordion component",
+                        "type": "registry:component",
+                        "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+                        "files": [
+                                {
+                                        "path": "src/accordion/accordion.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "hello-world",
+                        "type": "registry:component",
+                        "title": "Hello World",
+                        "description": "A simple hello world component",
 			"files": [
 				{
 					"path": "src/hello-world/hello-world.tsx",
