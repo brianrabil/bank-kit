@@ -28,17 +28,65 @@
 				}
 			]
 		},
-		{
-			"name": "hello-world",
-			"type": "registry:component",
-			"title": "Hello World",
-			"description": "A simple hello world component",
-			"files": [
-				{
-					"path": "src/hello-world/hello-world.tsx",
-					"type": "registry:component"
-				}
-			]
-		}
-	]
+                {
+                        "name": "hello-world",
+                        "type": "registry:component",
+                        "title": "Hello World",
+                        "description": "A simple hello world component",
+                        "files": [
+                                {
+                                        "path": "src/hello-world/hello-world.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "button",
+                        "title": "Button",
+                        "description": "A button component",
+                        "type": "registry:component",
+                        "files": [
+                                {
+                                        "path": "src/button/button.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "card",
+                        "title": "Card",
+                        "description": "A card component",
+                        "type": "registry:component",
+                        "files": [
+                                {
+                                        "path": "src/card/card.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "input",
+                        "title": "Input",
+                        "description": "A text input component",
+                        "type": "registry:component",
+                        "files": [
+                                {
+                                        "path": "src/input/input.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                },
+                {
+                        "name": "textarea",
+                        "title": "Textarea",
+                        "description": "A textarea component",
+                        "type": "registry:component",
+                        "files": [
+                                {
+                                        "path": "src/textarea/textarea.tsx",
+                                        "type": "registry:component"
+                                }
+                        ]
+                }
+        ]
 }
