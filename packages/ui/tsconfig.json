@@ -6,8 +6,7 @@
 		"noEmit": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*.ts", "./src/*.tsx"],
-			"@bank-kit/ui/*": ["./*"]
+			"@/*": ["./src/*.ts", "./src/*.tsx"]
 		}
 	},
 	"include": ["."],

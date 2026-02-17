@@ -1,0 +1,149 @@
+---
+title: Quick Start
+description: Set up and install Bank Kit in your project
+---
+
+# Installation
+
+Welcome to the Installation guide for **Bank Kit**! In this section, you’ll learn how to install the necessary packages, configure Tailwind CSS, and verify everything is working correctly in your local development environment.
+
+
+### 1. Clone or Create a Monorepo
+
+Bank Kit is designed to work in a **Turborepo** or **any** monorepo setup. If you’d like to use the provided structure:
+
+1. **Clone** the Bank Kit repository (or use it as a reference):
+
+```bash
+git clone https://github.com/yourorg/bank-kit.git
+cd bank-kit
+```
+
+2.	Install dependencies (for instance, using Bun):
+
+```bash
+bun install
+```
+
+Or if you prefer npm or yarn, run the equivalent command.
+
+If you already have a monorepo, you can simply install the Bank Kit packages where you need them (see below).
+
+---
+
+2. Install Bank Kit Packages
+
+Bank Kit includes several packages under the packages/ directory:
+-	@bank-kit/ui: The core UI library with banking-related components.
+-	@bank-kit/registry: Shadcn registry for generating or syncing components.
+-	@bank-kit/typescript-config: Shared TypeScript configuration (optional).
+
+If you need just the core UI library, install @bank-kit/ui:
+
+```bash
+bun add @bank-kit/ui
+# or
+npm install @bank-kit/ui
+# or
+yarn add @bank-kit/ui
+```
+
+### 3. Configure Tailwind CSS
+
+Because Bank Kit uses Tailwind CSS for styling, make sure your Tailwind config is set up to scan the correct paths. For example, in a Turborepo structure, your tailwind.config.js might look like this:
+
+```js copy
+// tailwind.config.ts
+module.exports = {
+  content: [
+    "./apps/**/*.{js,ts,jsx,tsx,mdx}",
+    "./packages/**/*.{js,ts,jsx,tsx,mdx}",
+    // Add more paths as needed
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+This ensures Tailwind will generate the necessary utility classes for the Bank Kit components (which might reside in packages/ui or packages/registry).
+
+### 4. Shadcn Registry (Optional)
+
+If you plan to use Shadcn’s registry-based workflows for scaffolding or updating components, you’ll need to ensure the @bank-kit/registry package is installed and configured. Then you can run commands like:
+
+From the repo root or the registry package directory:
+```bash copy
+npm run registry:build
+```
+```bash copy
+yarn registry:build
+```
+```bash copy
+bun run registry:build
+```
+
+These commands typically call shadcn build under the hood to sync or generate components defined in your .json registry files (found in apps/docs/public/r/ in the default repo layout).
+
+### 5. Verify Installation
+	1.	Link or import your UI library in a test component:
+
+```ts
+// apps/docs/pages/test.tsx
+import { Button } from "@bank-kit/ui/components/button"
+
+export default function TestPage() {
+  return (
+    <div className="p-4">
+      <Button>Click Me!</Button>
+    </div>
+  )
+}
+```
+
+	2.	Run your dev server (e.g., in the apps/docs folder if using the provided Next.js app):
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+bun run dev
+```
+
+
+	3.	Open your app in the browser. You should see a styled button, indicating Tailwind and Bank Kit are working correctly.
+
+
+### 6. Next Steps
+-	Explore our Examples: Dive into the /examples directory to see real-world demos and best practices for integrating Bank Kit.
+-	Check out Usage & Components: Learn about the various banking components (e.g., transaction lists, account overviews) available in Bank Kit.
+-	Premium Offerings: If you need advanced dashboards or specialized integrations, visit the Premium Overview.
+
+---
+
+Troubleshooting
+
+<details>
+  <summary><strong>Tailwind Classes Not Applying</strong></summary>
+  Double-check that the <code>content</code> array in <code>tailwind.config.js</code> includes <code>./packages/**/*</code> paths, as Bank Kit’s components may reside within <code>packages/ui</code>.
+</details>
+
+
+<details>
+  <summary><strong>TypeScript Errors</strong></summary>
+  If you encounter TS issues, ensure you are extending the shared <code>@bank-kit/typescript-config</code> (if you want a unified TS config). Also, confirm that <code>typescript</code> is installed in each workspace.
+</details>
+
+
+<details>
+  <summary><strong>Registry Build Failures</strong></summary>
+  Confirm that <code>shadcn</code> is installed where <code>registry:build</code> is executed. For instance, <code>@bank-kit/registry</code> includes <code>"shadcn": "2.2.0-canary.1"</code>, so ensure dependencies are installed correctly.
+</details>
+
+---
+
+That’s it! You’re all set to use Bank Kit in your project. For more details on usage, component demos, and advanced configuration, continue exploring the Documentation pages. If you have questions or run into issues, don’t hesitate to reach out via our community channels.
+
+Enjoy building with Bank Kit!

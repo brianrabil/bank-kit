@@ -14,13 +14,9 @@
 	"devDependencies": {
 		"@bank-kit/typescript-config": "workspace:*",
 		"@biomejs/biome": "1.9.4",
-		"@types/next": "^9.0.0",
 		"turbo": "^2.5.3",
 		"typescript": "^5"
 	},
 	"workspaces": ["apps/*", "packages/*"],
-	"packageManager": "bun@1.2.5",
-	"dependencies": {
-		"next": "^15.4.1"
-	}
+	"packageManager": "bun@1.2.5"
 }

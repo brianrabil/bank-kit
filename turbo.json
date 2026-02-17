@@ -21,6 +21,10 @@
 		"//#biome:check:write": {
 			"cache": false
 		},
+		"test": {
+			"dependsOn": ["build"],
+			"outputs": ["coverage/**"]
+		},
 		"deploy": {
 			"cache": false
 		}

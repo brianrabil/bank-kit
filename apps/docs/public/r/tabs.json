@@ -4,7 +4,6 @@
   "type": "registry:component",
   "title": "Tabs",
   "description": "A tabs component",
-  "dependencies": [],
   "files": [
     {
       "path": "src/tabs/tabs.tsx",

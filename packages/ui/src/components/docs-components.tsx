@@ -12,7 +12,7 @@ import {
 	CardHeader,
 	CardContent,
 	CardTitle,
-} from "@bank-kit/ui/registry/new-york/ui/card";
+} from "@bank-kit/ui/components/ui/card";
 import {
 	Table,
 	TableBody,
@@ -20,8 +20,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@bank-kit/ui/registry/new-york/ui/table";
-import { Badge } from "@bank-kit/ui/registry/new-york/ui/badge";
+} from "@bank-kit/ui/components/ui/table";
+import { Badge } from "@bank-kit/ui/components/ui/badge";
 
 /* -------------------------------------------------------------------------------------------------
  * ComponentPreview
@@ -179,36 +179,4 @@ export const PropsTable: React.FC<PropsTableProps> = ({ props, className }) => (
 			</TableBody>
 		</Table>
 	</div>
-);
-
-/* -------------------------------------------------------------------------------------------------
- * LinkedCard
- * ------------------------------------------------------------------------------------------------ */
-
-/**
- * Props for {@link LinkedCard}.
- */
-export interface LinkedCardProps {
-	/** URL to navigate to when clicked. */
-	href: string;
-	/** Content to display inside the card. */
-	children: React.ReactNode;
-	/** Extra classes for the card. */
-	className?: string;
-}
-
-/**
- * A clickable card component that wraps content in a link.
- * Designed for navigation cards in documentation.
- *
- * @component
- */
-export const LinkedCard: React.FC<LinkedCardProps> = ({ href, children, className }) => (
-	<Card className={cn("p-6 hover:bg-muted/50 transition-colors cursor-pointer", className)}>
-		<a href={href} className="block text-inherit no-underline">
-			<CardContent className="p-0">
-				{children}
-			</CardContent>
-		</a>
-	</Card>
 );

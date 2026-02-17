@@ -5,8 +5,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@bank-kit/ui/registry/new-york/ui/table";
-import { Badge } from "@bank-kit/ui/registry/new-york/ui/badge";
+} from "@bank-kit/ui/components/ui/table";
+import { Badge } from "@bank-kit/ui/components/ui/badge";
 
 /**
  * Represents a single property in the props table
