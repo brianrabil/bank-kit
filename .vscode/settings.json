@@ -17,5 +17,8 @@
 		"turbopack",
 		"twoslash",
 		"vaul"
-	]
+	],
+	"[mdx]": {
+		"editor.defaultFormatter": "unifiedjs.vscode-mdx"
+	}
 }

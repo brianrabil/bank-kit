@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+// @ts-expect-error
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import clsx from "clsx";
@@ -19,22 +20,30 @@ interface NavBarProps {
 
 export function NavBar({ items, className }: NavBarProps) {
 	// Ensure items is not empty to avoid runtime error
-	const [activeTab, setActiveTab] = useState(
-		items.length > 0 ? items[0]?.name : "",
-	);
+	const [activeTab, setActiveTab] = useState("");
 	const [isMobile, setIsMobile] = useState(false);
+	const [hasMounted, setHasMounted] = useState(false);
 
 	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+
+	useEffect(() => {
+		if (!hasMounted) return;
+		if (items.length > 0) setActiveTab(items[0]?.name ?? "");
+	}, [items, hasMounted]);
+
+	useEffect(() => {
+		if (!hasMounted) return;
 		const handleResize = () => {
 			setIsMobile(window.innerWidth < 768);
 		};
-
 		handleResize();
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+	}, [hasMounted]);
 
-	if (!items || items.length === 0) return null;
+	if (!hasMounted || !items || items.length === 0) return null;
 
 	return (
 		<div
